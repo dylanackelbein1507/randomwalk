@@ -10,6 +10,7 @@
       --bg: #050608;
       --panel: rgba(8, 10, 14, 0.94);
       --panel-2: rgba(12, 15, 22, 0.94);
+      --panel-3: rgba(5, 8, 14, 0.98);
       --line: rgba(98, 145, 224, 0.18);
       --line-strong: rgba(116, 169, 255, 0.45);
       --text: #e8efff;
@@ -20,6 +21,7 @@
       --red-2: #dc2626;
       --amber: #f59e0b;
       --green: #22c55e;
+      --gold: #fbbf24;
     }
 
     * { box-sizing: border-box; }
@@ -104,12 +106,6 @@
     }
 
     button.secondary { background: var(--panel-2); }
-
-    button.danger {
-      background: linear-gradient(90deg, #29080b, #7f1d1d);
-      border-color: rgba(239,68,68,0.55);
-    }
-
     button.success {
       background: linear-gradient(90deg, #07170d, #14532d);
       border-color: rgba(34,197,94,0.55);
@@ -125,6 +121,7 @@
       opacity: 0.42;
       cursor: not-allowed;
       box-shadow: none;
+      transform: none;
     }
 
     .card {
@@ -169,7 +166,8 @@
       font-size: 18px;
     }
 
-    .progress-bar {
+    .progress-bar,
+    .action-bar {
       margin-top: 10px;
       width: 100%;
       height: 10px;
@@ -186,21 +184,11 @@
       transition: width .25s ease;
     }
 
-    .action-bar {
-      margin-top: 8px;
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(116,169,255,0.12);
-    }
-
     .action-fill {
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #3b82f6, #f59e0b);
-      transition: width .16s linear;
+      transition: width .12s linear;
     }
 
     .action-status {
@@ -210,12 +198,12 @@
       min-height: 16px;
     }
 
-    .objective-list, .pickup-list, .directions-scroll {
+    .objective-list, .pickup-list, .directions-scroll, .stats-list {
       display: grid;
       gap: 8px;
     }
 
-    .objective-item, .pickup-item, .direction-item {
+    .objective-item, .pickup-item, .direction-item, .stats-item {
       padding: 10px;
       border-radius: 8px;
       background: rgba(8,11,16,0.92);
@@ -230,23 +218,23 @@
 
     .objective-item.targeted,
     .pickup-item.targeted {
-      border-color: rgba(96,165,250,0.65);
-      box-shadow: 0 0 0 1px rgba(96,165,250,0.16), 0 0 18px rgba(37,99,235,0.12);
+      border-color: rgba(96,165,250,0.45);
+      box-shadow: 0 0 0 1px rgba(96,165,250,0.14), 0 0 18px rgba(37,99,235,0.08);
     }
 
-    .objective-top, .pickup-top, .direction-top {
+    .objective-top, .pickup-top, .direction-top, .stats-top {
       display: flex;
       justify-content: space-between;
       gap: 10px;
     }
 
-    .objective-tag, .pickup-tag, .direction-tag {
+    .objective-tag, .pickup-tag, .direction-tag, .stats-tag {
       color: var(--blue);
       font-size: 10px;
       letter-spacing: 1.6px;
     }
 
-    .objective-distance, .pickup-distance, .direction-distance {
+    .objective-distance, .pickup-distance, .direction-distance, .stats-value {
       color: var(--muted);
       font-size: 10px;
     }
@@ -276,7 +264,7 @@
     #map {
       height: 100%;
       width: 100%;
-      filter: grayscale(0.85) contrast(1.18) brightness(0.78) saturate(0.78);
+      filter: grayscale(0.86) contrast(1.16) brightness(0.76) saturate(0.72);
     }
 
     .tactical-grid, .vignette, .scan-line, .crosshair {
@@ -288,15 +276,15 @@
     .tactical-grid {
       z-index: 5;
       background:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
       background-size: 46px 46px;
-      opacity: .16;
+      opacity: .14;
     }
 
     .vignette {
       z-index: 6;
-      background: radial-gradient(circle at center, transparent 46%, rgba(0,0,0,0.22) 100%);
+      background: radial-gradient(circle at center, transparent 46%, rgba(0,0,0,0.24) 100%);
     }
 
     .crosshair {
@@ -304,36 +292,40 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 110px;
-      height: 110px;
+      width: 96px;
+      height: 96px;
       z-index: 12;
-      opacity: .55;
+      opacity: .6;
     }
 
     .crosshair::before, .crosshair::after {
       content: '';
       position: absolute;
-      background: rgba(110,168,255,0.55);
+      background: rgba(110,168,255,0.5);
     }
 
     .crosshair::before {
-      left: 50%; top: 0;
-      width: 1px; height: 100%;
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 100%;
       transform: translateX(-50%);
     }
 
     .crosshair::after {
-      top: 50%; left: 0;
-      width: 100%; height: 1px;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
       transform: translateY(-50%);
     }
 
     .crosshair-ring {
       position: absolute;
-      inset: 28px;
-      border: 1px solid rgba(110,168,255,0.45);
+      inset: 30px;
+      border: 1px solid rgba(110,168,255,0.4);
       border-radius: 999px;
-      box-shadow: 0 0 16px rgba(37,99,235,0.15);
+      box-shadow: 0 0 14px rgba(37,99,235,0.12);
     }
 
     .crosshair-dot {
@@ -344,18 +336,18 @@
       height: 8px;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: rgba(191,219,254,0.8);
-      box-shadow: 0 0 12px rgba(96,165,250,0.35);
+      background: rgba(191,219,254,0.85);
+      box-shadow: 0 0 10px rgba(96,165,250,0.32);
     }
 
     .crosshair.locked .crosshair-ring {
-      border-color: rgba(239,68,68,0.8);
-      box-shadow: 0 0 16px rgba(239,68,68,0.24);
+      border-color: rgba(239,68,68,0.82);
+      box-shadow: 0 0 14px rgba(239,68,68,0.22);
     }
 
     .crosshair.intel-lock .crosshair-ring {
-      border-color: rgba(245,158,11,0.85);
-      box-shadow: 0 0 16px rgba(245,158,11,0.24);
+      border-color: rgba(245,158,11,0.82);
+      box-shadow: 0 0 14px rgba(245,158,11,0.22);
     }
 
     .scan-line {
@@ -363,7 +355,7 @@
       background: linear-gradient(to bottom, transparent 0%, rgba(110,168,255,0.06) 48%, rgba(110,168,255,0.16) 50%, rgba(110,168,255,0.06) 52%, transparent 100%);
       background-size: 100% 180px;
       animation: sweep 7s linear infinite;
-      opacity: .25;
+      opacity: .23;
     }
 
     @keyframes sweep {
@@ -385,7 +377,7 @@
 
     .hud-panel {
       min-width: 168px;
-      background: rgba(3,5,8,0.72);
+      background: rgba(3,5,8,0.7);
       border: 1px solid rgba(116,169,255,0.18);
       padding: 10px 12px;
       backdrop-filter: blur(2px);
@@ -433,30 +425,30 @@
       position: absolute;
       z-index: 11;
       left: 20px;
-      bottom: 22px;
+      bottom: 18px;
       pointer-events: none;
       background: rgba(6,8,12,0.82);
       border: 1px solid rgba(116,169,255,0.22);
       color: #dbe8ff;
       border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 10px;
+      padding: 7px 10px;
+      font-size: 9px;
       letter-spacing: 1.8px;
       box-shadow: 0 8px 18px rgba(0,0,0,0.28);
     }
 
     .mission-toast {
       position: absolute;
+      top: 96px;
       left: 50%;
-      bottom: 22px;
       transform: translateX(-50%);
       z-index: 15;
-      min-width: min(88vw, 420px);
-      max-width: min(88vw, 420px);
+      min-width: min(72vw, 360px);
+      max-width: min(72vw, 360px);
       background: rgba(6,8,12,0.94);
       border: 1px solid rgba(116,169,255,0.25);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 10px 12px;
       backdrop-filter: blur(8px);
       box-shadow: 0 12px 28px rgba(0,0,0,0.35);
       display: none;
@@ -486,7 +478,7 @@
     }
 
     .impact-flash.active {
-      animation: explosionPulse .8s ease-out forwards;
+      animation: explosionPulse .85s ease-out forwards;
     }
 
     @keyframes explosionPulse {
@@ -494,20 +486,204 @@
         width: 24px;
         height: 24px;
         opacity: 1;
-        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(253,224,71,0.95) 25%, rgba(249,115,22,0.9) 55%, rgba(220,38,38,0.6) 75%, rgba(220,38,38,0) 100%);
-        box-shadow: 0 0 0 0 rgba(249,115,22,0.35);
+        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(253,224,71,0.96) 24%, rgba(249,115,22,0.92) 55%, rgba(220,38,38,0.62) 76%, rgba(220,38,38,0) 100%);
       }
       100% {
         width: 220px;
         height: 220px;
         opacity: 0;
-        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(253,224,71,0.25) 20%, rgba(249,115,22,0.22) 45%, rgba(220,38,38,0.08) 70%, rgba(220,38,38,0) 100%);
-        box-shadow: 0 0 0 28px rgba(249,115,22,0);
+        background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(253,224,71,0.2) 20%, rgba(249,115,22,0.18) 45%, rgba(220,38,38,0.08) 70%, rgba(220,38,38,0) 100%);
       }
+    }
+
+    .crosshair-action-pod {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, calc(-50% + 78px));
+      z-index: 19;
+      display: none;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      min-width: 170px;
+      pointer-events: none;
+    }
+
+    .crosshair-action-pod.visible {
+      display: grid;
+    }
+
+    .crosshair-action-card {
+      pointer-events: auto;
+      background: rgba(5, 8, 14, 0.94);
+      border: 1px solid rgba(116,169,255,0.22);
+      border-radius: 12px;
+      padding: 10px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+    }
+
+    .crosshair-action-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .crosshair-action-meta {
+      font-size: 11px;
+      color: #dbe8ff;
+      margin-bottom: 8px;
+    }
+
+    .crosshair-action-btn {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(116,169,255,0.32);
+      background: linear-gradient(90deg, #0a1222, #163871);
+      color: #f4f8ff;
+      padding: 11px 12px;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    .crosshair-action-btn.danger {
+      background: linear-gradient(90deg, #2a0a0d, #7f1d1d);
+      border-color: rgba(239,68,68,0.45);
+    }
+
+    .crosshair-action-btn.intel {
+      background: linear-gradient(90deg, #1b1204, #7c4a03);
+      border-color: rgba(245,158,11,0.45);
+    }
+
+    .crosshair-action-btn.busy {
+      background: linear-gradient(90deg, #0a1222, #163871);
+      border-color: rgba(116,169,255,0.45);
+    }
+
+    .crosshair-action-btn:hover:not(:disabled) {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .crosshair-action-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .crosshair-status-mini {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1.4px;
+      text-align: center;
+    }
+
+    .route-node {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(220, 230, 255, 0.75);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 0 10px rgba(110,168,255,0.12);
+    }
+
+    .route-node.start {
+      width: 15px;
+      height: 15px;
+      background: rgba(191,219,254,0.95);
+      border: 2px solid rgba(255,255,255,0.9);
+    }
+
+    .overlay-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2,4,7,0.74);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+    }
+
+    .overlay-screen.visible {
+      display: flex;
+    }
+
+    .overlay-card {
+      width: min(92vw, 560px);
+      background: linear-gradient(180deg, rgba(9,12,18,0.98), rgba(4,6,10,0.98));
+      border: 1px solid rgba(116,169,255,0.22);
+      border-radius: 16px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+      padding: 18px;
+    }
+
+    .overlay-eyebrow {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2.4px;
+      margin-bottom: 10px;
+    }
+
+    .overlay-title {
+      font-size: 24px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .overlay-sub {
+      color: #c8d7f7;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .overlay-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .overlay-metric {
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(9,12,18,0.82);
+      border: 1px solid rgba(116,169,255,0.16);
+    }
+
+    .overlay-metric-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1.6px;
+    }
+
+    .overlay-metric-value {
+      font-size: 18px;
+      margin-top: 6px;
+    }
+
+    .overlay-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .overlay-rank {
+      color: var(--gold);
     }
 
     .mobile-drawer { display: none; }
     .floating-button { display: none; }
+
+    .leaflet-popup,
+    .leaflet-popup-pane {
+      display: none !important;
+    }
 
     .leaflet-control-zoom a {
       background: rgba(5,7,10,0.92) !important;
@@ -537,13 +713,11 @@
       .hud-top-left {
         top: 12px;
         left: 12px;
-        right: auto;
       }
 
       .hud-top-right {
         top: 12px;
         right: 12px;
-        left: auto;
       }
 
       .hud-bottom-right {
@@ -613,19 +787,27 @@
       }
 
       .mission-toast {
-        bottom: calc(88px + env(safe-area-inset-bottom));
-        left: 12px;
-        right: 12px;
-        transform: none;
-        min-width: auto;
-        max-width: none;
+        top: 92px;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        min-width: min(84vw, 320px);
+        max-width: min(84vw, 320px);
       }
 
       .map-label-chip {
-        left: 12px;
-        bottom: calc(142px + env(safe-area-inset-bottom));
-        font-size: 9px;
-        padding: 7px 10px;
+        display: none;
+      }
+
+      .crosshair-action-pod {
+        transform: translate(-50%, calc(-50% + 70px));
+        min-width: 156px;
+      }
+
+      .overlay-grid,
+      .overlay-actions {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -667,10 +849,6 @@
       <div class="card">
         <div class="card-title">MISSION ACTIONS</div>
         <div class="button-row">
-          <button id="airStrikeBtn" class="danger" disabled>AIR STRIKE</button>
-          <button id="gatherIntelBtn" disabled>GATHER INTEL</button>
-        </div>
-        <div class="button-row">
           <button id="exfilBtn" class="success" disabled>EXFIL</button>
           <button id="scanBtn" class="secondary">SCAN TARGET</button>
         </div>
@@ -689,6 +867,11 @@
           <div class="metric"><div class="metric-label">ROUTE</div><div class="metric-value" id="routeDistanceText">-- MI</div></div>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">OPERATIVE RECORD</div>
+        <div class="stats-list" id="statsList"></div>
       </div>
 
       <div class="card">
@@ -711,12 +894,24 @@
       <div id="map"></div>
       <div class="tactical-grid"></div>
       <div class="scan-line"></div>
+
       <div class="crosshair" id="crosshair">
         <div class="crosshair-ring"></div>
         <div class="crosshair-dot"></div>
       </div>
-      <div class="vignette"></div>
+
       <div class="impact-flash" id="impactFlash"></div>
+
+      <div class="crosshair-action-pod" id="crosshairActionPod">
+        <div class="crosshair-action-card">
+          <div class="crosshair-action-label" id="crosshairActionLabel">NO TARGET</div>
+          <div class="crosshair-action-meta" id="crosshairActionMeta">Sweep for hostiles or intel.</div>
+          <button id="crosshairActionBtn" class="crosshair-action-btn" disabled>SCAN</button>
+        </div>
+        <div class="crosshair-status-mini" id="crosshairStatusMini">ALIGN CROSSHAIR ON TARGET</div>
+      </div>
+
+      <div class="vignette"></div>
 
       <div class="hud hud-top-left">
         <div class="hud-panel">
@@ -736,7 +931,7 @@
         <div class="hud-panel">
           <div class="hud-title">ENVIRONMENT</div>
           <div id="hudTime">LOCAL 00:00:00</div>
-          <div class="coords" id="hudProfile">PROFILE // NIGHT OPS</div>
+          <div class="coords" id="hudProfile">PROFILE // BALANCED</div>
           <div class="coords" id="hudOverlay">OVERWATCH // ACTIVE TRACKING</div>
         </div>
       </div>
@@ -747,7 +942,7 @@
           <div id="hudDistance">TARGET -- MI</div>
           <div class="coords" id="hudActual">ACTUAL -- MI</div>
           <div class="coords" id="hudCoords">LAT ---.---- / LNG ---.----</div>
-          <div class="coords">SURVEILLANCE // LIVE FEED</div>
+          <div class="coords" id="hudRank">RANK // RECRUIT</div>
         </div>
       </div>
 
@@ -756,6 +951,48 @@
       <div class="mission-toast" id="missionToast">
         <div class="toast-label" id="toastLabel">FIELD INSTRUCTION</div>
         <div class="toast-body" id="toastBody">Awaiting route.</div>
+      </div>
+
+      <div class="overlay-screen" id="briefingOverlay">
+        <div class="overlay-card">
+          <div class="overlay-eyebrow">MISSION BRIEF</div>
+          <div class="overlay-title" id="briefingTitle">STANDARD SWEEP</div>
+          <div class="overlay-sub" id="briefingSub">Neutralize hostiles and secure intel.</div>
+
+          <div class="overlay-grid">
+            <div class="overlay-metric"><div class="overlay-metric-label">THREAT</div><div class="overlay-metric-value" id="briefingThreat">MEDIUM</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">DISTANCE</div><div class="overlay-metric-value" id="briefingDistance">2.0 MI</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">HOSTILES</div><div class="overlay-metric-value" id="briefingHostiles">0</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">INTEL</div><div class="overlay-metric-value" id="briefingIntel">0</div></div>
+          </div>
+
+          <div class="overlay-actions">
+            <button id="briefingStartBtn">DEPLOY</button>
+            <button id="briefingCancelBtn" class="secondary">STAND DOWN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay-screen" id="debriefOverlay">
+        <div class="overlay-card">
+          <div class="overlay-eyebrow">MISSION DEBRIEF</div>
+          <div class="overlay-title" id="debriefTitle">MISSION SUCCESS</div>
+          <div class="overlay-sub" id="debriefSub">Clean extraction confirmed.</div>
+
+          <div class="overlay-grid">
+            <div class="overlay-metric"><div class="overlay-metric-label">SCORE</div><div class="overlay-metric-value" id="debriefScore">0</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">TIME</div><div class="overlay-metric-value" id="debriefTime">0 MIN</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">DISTANCE</div><div class="overlay-metric-value" id="debriefDistance">0 MI</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">CALORIES</div><div class="overlay-metric-value" id="debriefCalories">0</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">RANK</div><div class="overlay-metric-value overlay-rank" id="debriefRank">RECRUIT</div></div>
+            <div class="overlay-metric"><div class="overlay-metric-label">STREAK</div><div class="overlay-metric-value" id="debriefStreak">0</div></div>
+          </div>
+
+          <div class="overlay-actions">
+            <button id="debriefCloseBtn">CONTINUE</button>
+            <button id="debriefNewMissionBtn" class="secondary">NEW MISSION</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -794,10 +1031,6 @@
         <div class="card">
           <div class="card-title">MISSION ACTIONS</div>
           <div class="button-row">
-            <button id="airStrikeBtnMobile" class="danger" disabled>AIR STRIKE</button>
-            <button id="gatherIntelBtnMobile" disabled>GATHER INTEL</button>
-          </div>
-          <div class="button-row">
             <button id="exfilBtnMobile" class="success" disabled>EXFIL</button>
             <button id="scanBtnMobile" class="secondary">SCAN TARGET</button>
           </div>
@@ -805,7 +1038,11 @@
           <div class="action-status" id="actionStatusMobile">AWAITING TARGET LOCK</div>
         </div>
 
-        <div class="card"><div class="card-title">SYSTEM STATUS</div><div class="status-text" id="statusMobile">SYSTEM READY<br><span class="coords">AWAITING DEPLOYMENT</span></div><div class="coords" id="coordsTextMobile">LAT ---.---- / LNG ---.----</div></div>
+        <div class="card">
+          <div class="card-title">SYSTEM STATUS</div>
+          <div class="status-text" id="statusMobile">SYSTEM READY<br><span class="coords">AWAITING DEPLOYMENT</span></div>
+          <div class="coords" id="coordsTextMobile">LAT ---.---- / LNG ---.----</div>
+        </div>
 
         <div class="card">
           <div class="card-title">MISSION PROGRESS</div>
@@ -818,6 +1055,11 @@
             <div class="metric"><div class="metric-label">ROUTE</div><div class="metric-value" id="routeDistanceTextMobile">-- MI</div></div>
           </div>
           <div class="progress-bar"><div class="progress-fill" id="progressFillMobile"></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">OPERATIVE RECORD</div>
+          <div class="stats-list" id="statsListMobile"></div>
         </div>
 
         <div class="card"><div class="card-title">HOSTILES</div><div class="objective-list" id="targetListMobile"><div class="objective-item"><div class="objective-body">NO HOSTILES ASSIGNED</div></div></div></div>
@@ -842,6 +1084,61 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    const STORAGE_KEY = 'ops_route_intel_v2';
+
+    const MISSION_TYPES = [
+      {
+        id: 'balanced',
+        name: 'STANDARD SWEEP',
+        hostiles: [3, 5],
+        intel: [2, 4],
+        threat: 'MEDIUM',
+        description: 'Neutralize active hostiles and secure intelligence along the route.'
+      },
+      {
+        id: 'recon',
+        name: 'RECON MISSION',
+        hostiles: [1, 2],
+        intel: [4, 7],
+        threat: 'LOW',
+        description: 'Minimal engagement. Priority is intelligence collection and clean movement.'
+      },
+      {
+        id: 'elimination',
+        name: 'ELIMINATION RUN',
+        hostiles: [6, 9],
+        intel: [1, 2],
+        threat: 'HIGH',
+        description: 'High-threat zone. Eliminate all marked hostiles and extract immediately.'
+      },
+      {
+        id: 'dead_drop',
+        name: 'DEAD DROP',
+        hostiles: [2, 4],
+        intel: [3, 5],
+        threat: 'MEDIUM',
+        description: 'Recover scattered packages, clear opposition, and return clean to insertion.'
+      }
+    ];
+
+    const DEFAULT_STATS = {
+      missions: 0,
+      streak: 0,
+      bestStreak: 0,
+      totalDistance: 0,
+      kills: 0,
+      intel: 0,
+      weeklyMissions: 0,
+      rank: 'RECRUIT',
+      lastMissionDate: null
+    };
+
+    const GAME = {
+      stats: loadStats(),
+      pendingMission: null,
+      currentMission: null
+    };
+
     let startPoint = null;
     let routeLayer = null;
     let startMarker = null;
@@ -852,6 +1149,7 @@
     let pickups = [];
     let enemyZones = [];
     let intelMarkers = [];
+    let routeNodes = [];
     let kills = 0;
     let collectedIntel = 0;
     let watchId = null;
@@ -862,22 +1160,26 @@
     let missionActive = false;
     let missionComplete = false;
     let actionBusy = false;
+    let currentRouteDistanceMiles = 0;
 
     const el = {
       distance: document.getElementById('distance'),
       distanceMobile: document.getElementById('distanceMobile'),
       mode: document.getElementById('mode'),
       modeMobile: document.getElementById('modeMobile'),
+
       status: document.getElementById('status'),
       statusMobile: document.getElementById('statusMobile'),
       coordsText: document.getElementById('coordsText'),
       coordsTextMobile: document.getElementById('coordsTextMobile'),
+
       hudCoords: document.getElementById('hudCoords'),
       hudTime: document.getElementById('hudTime'),
       hudProfile: document.getElementById('hudProfile'),
       hudOverlay: document.getElementById('hudOverlay'),
       hudDistance: document.getElementById('hudDistance'),
       hudActual: document.getElementById('hudActual'),
+      hudRank: document.getElementById('hudRank'),
       mapChip: document.getElementById('mapChip'),
 
       targetList: document.getElementById('targetList'),
@@ -886,6 +1188,8 @@
       pickupListMobile: document.getElementById('pickupListMobile'),
       directionsList: document.getElementById('directionsList'),
       directionsListMobile: document.getElementById('directionsListMobile'),
+      statsList: document.getElementById('statsList'),
+      statsListMobile: document.getElementById('statsListMobile'),
 
       targetProgress: document.getElementById('targetProgress'),
       targetProgressMobile: document.getElementById('targetProgressMobile'),
@@ -902,15 +1206,11 @@
       progressFill: document.getElementById('progressFill'),
       progressFillMobile: document.getElementById('progressFillMobile'),
 
-      airStrikeBtn: document.getElementById('airStrikeBtn'),
-      gatherIntelBtn: document.getElementById('gatherIntelBtn'),
       exfilBtn: document.getElementById('exfilBtn'),
       scanBtn: document.getElementById('scanBtn'),
       actionFill: document.getElementById('actionFill'),
       actionStatus: document.getElementById('actionStatus'),
 
-      airStrikeBtnMobile: document.getElementById('airStrikeBtnMobile'),
-      gatherIntelBtnMobile: document.getElementById('gatherIntelBtnMobile'),
       exfilBtnMobile: document.getElementById('exfilBtnMobile'),
       scanBtnMobile: document.getElementById('scanBtnMobile'),
       actionFillMobile: document.getElementById('actionFillMobile'),
@@ -918,6 +1218,11 @@
 
       crosshair: document.getElementById('crosshair'),
       impactFlash: document.getElementById('impactFlash'),
+      crosshairActionPod: document.getElementById('crosshairActionPod'),
+      crosshairActionLabel: document.getElementById('crosshairActionLabel'),
+      crosshairActionMeta: document.getElementById('crosshairActionMeta'),
+      crosshairActionBtn: document.getElementById('crosshairActionBtn'),
+      crosshairStatusMini: document.getElementById('crosshairStatusMini'),
 
       mobileDrawer: document.getElementById('mobileDrawer'),
       toggleDrawerBtn: document.getElementById('toggleDrawerBtn'),
@@ -926,8 +1231,47 @@
       toastBody: document.getElementById('toastBody'),
       mobileButtons: document.getElementById('mobileButtons'),
       mobileInstructionPanel: document.getElementById('mobileInstructionPanel'),
-      mobileInstructionBody: document.getElementById('mobileInstructionBody')
+      mobileInstructionBody: document.getElementById('mobileInstructionBody'),
+
+      briefingOverlay: document.getElementById('briefingOverlay'),
+      briefingTitle: document.getElementById('briefingTitle'),
+      briefingSub: document.getElementById('briefingSub'),
+      briefingThreat: document.getElementById('briefingThreat'),
+      briefingDistance: document.getElementById('briefingDistance'),
+      briefingHostiles: document.getElementById('briefingHostiles'),
+      briefingIntel: document.getElementById('briefingIntel'),
+      briefingStartBtn: document.getElementById('briefingStartBtn'),
+      briefingCancelBtn: document.getElementById('briefingCancelBtn'),
+
+      debriefOverlay: document.getElementById('debriefOverlay'),
+      debriefTitle: document.getElementById('debriefTitle'),
+      debriefSub: document.getElementById('debriefSub'),
+      debriefScore: document.getElementById('debriefScore'),
+      debriefTime: document.getElementById('debriefTime'),
+      debriefDistance: document.getElementById('debriefDistance'),
+      debriefCalories: document.getElementById('debriefCalories'),
+      debriefRank: document.getElementById('debriefRank'),
+      debriefStreak: document.getElementById('debriefStreak'),
+      debriefCloseBtn: document.getElementById('debriefCloseBtn'),
+      debriefNewMissionBtn: document.getElementById('debriefNewMissionBtn')
     };
+
+    function loadStats() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        return { ...DEFAULT_STATS, ...raw };
+      } catch {
+        return { ...DEFAULT_STATS };
+      }
+    }
+
+    function saveStats() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(GAME.stats));
+    }
+
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     function setSyncedInputs(source = null) {
       if (source !== 'desktop') {
@@ -972,6 +1316,7 @@
       const dist = parseFloat(el.distance.value || '0').toFixed(1);
       el.hudProfile.textContent = `PROFILE // ${mode}`;
       el.hudDistance.textContent = `TARGET ${dist} MI`;
+      el.hudRank.textContent = `RANK // ${GAME.stats.rank}`;
     }
 
     function tickClock() {
@@ -989,7 +1334,10 @@
       const R = 6371000;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
       return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
@@ -998,13 +1346,15 @@
       const br = ((Math.random() + seedShift) % 1) * 2 * Math.PI;
       const lat1 = lat * Math.PI / 180;
       const lng1 = lng * Math.PI / 180;
-      const lat2 = Math.asin(Math.sin(lat1) * Math.cos(distanceMeters / r) + Math.cos(lat1) * Math.sin(distanceMeters / r) * Math.cos(br));
-      const lng2 = lng1 + Math.atan2(Math.sin(br) * Math.sin(distanceMeters / r) * Math.cos(lat1), Math.cos(distanceMeters / r) - Math.sin(lat1) * Math.sin(lat2));
+      const lat2 = Math.asin(
+        Math.sin(lat1) * Math.cos(distanceMeters / r) +
+        Math.cos(lat1) * Math.sin(distanceMeters / r) * Math.cos(br)
+      );
+      const lng2 = lng1 + Math.atan2(
+        Math.sin(br) * Math.sin(distanceMeters / r) * Math.cos(lat1),
+        Math.cos(distanceMeters / r) - Math.sin(lat1) * Math.sin(lat2)
+      );
       return { lat: lat2 * 180 / Math.PI, lng: lng2 * 180 / Math.PI };
-    }
-
-    function randInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     async function fetchRoute(points) {
@@ -1021,10 +1371,10 @@
       if (key === lastToastKey) return;
       lastToastKey = key;
       el.toastLabel.textContent = label;
-      el.toastBody.textContent = body;
+      el.toastBody.innerHTML = body;
       el.missionToast.style.display = 'block';
       if (persistMobile) {
-        el.mobileInstructionBody.textContent = `${label}: ${body}`;
+        el.mobileInstructionBody.innerHTML = `${label}: ${body}`;
       }
       clearTimeout(showToast._timer);
       showToast._timer = setTimeout(() => {
@@ -1033,15 +1383,167 @@
       }, 3200);
     }
 
+    function createMission(distance) {
+      const mode = el.mode.value;
+      let pool = [...MISSION_TYPES];
+      if (mode === 'night') {
+        pool = [...MISSION_TYPES.filter(m => m.id !== 'recon'), MISSION_TYPES.find(m => m.id === 'elimination')];
+      }
+      if (mode === 'scenic') {
+        pool = [...MISSION_TYPES.filter(m => m.id !== 'elimination'), MISSION_TYPES.find(m => m.id === 'recon')];
+      }
+
+      const template = pool[randInt(0, pool.length - 1)];
+      return {
+        id: Date.now(),
+        type: template.id,
+        name: template.name,
+        description: template.description,
+        threat: template.threat,
+        hostiles: randInt(template.hostiles[0], template.hostiles[1]),
+        intel: randInt(template.intel[0], template.intel[1]),
+        targetDistance: distance,
+        startTime: null,
+        endTime: null,
+        actualDistance: 0
+      };
+    }
+
+    function showBriefing(mission) {
+      el.briefingTitle.textContent = mission.name;
+      el.briefingSub.textContent = mission.description;
+      el.briefingThreat.textContent = mission.threat;
+      el.briefingDistance.textContent = `${mission.targetDistance.toFixed(1)} MI`;
+      el.briefingHostiles.textContent = mission.hostiles;
+      el.briefingIntel.textContent = mission.intel;
+      el.briefingOverlay.classList.add('visible');
+    }
+
+    function hideBriefing() {
+      el.briefingOverlay.classList.remove('visible');
+    }
+
+    function showDebrief(data) {
+      el.debriefTitle.textContent = 'MISSION SUCCESS';
+      el.debriefSub.textContent = 'Objective package complete. Extraction confirmed.';
+      el.debriefScore.textContent = data.score;
+      el.debriefTime.textContent = `${data.durationMin.toFixed(1)} MIN`;
+      el.debriefDistance.textContent = `${data.distance.toFixed(2)} MI`;
+      el.debriefCalories.textContent = `${data.calories}`;
+      el.debriefRank.textContent = GAME.stats.rank;
+      el.debriefStreak.textContent = GAME.stats.streak;
+      el.debriefOverlay.classList.add('visible');
+    }
+
+    function hideDebrief() {
+      el.debriefOverlay.classList.remove('visible');
+    }
+
+    function updateRank() {
+      const m = GAME.stats.missions;
+      if (m >= 60) GAME.stats.rank = 'PHANTOM';
+      else if (m >= 40) GAME.stats.rank = 'HANDLER';
+      else if (m >= 25) GAME.stats.rank = 'OPERATIVE';
+      else if (m >= 12) GAME.stats.rank = 'FIELD AGENT';
+      else GAME.stats.rank = 'RECRUIT';
+    }
+
+    function maybeUpdateStreak() {
+      const today = new Date().toDateString();
+      const last = GAME.stats.lastMissionDate;
+
+      if (!last) {
+        GAME.stats.streak = 1;
+      } else {
+        const lastDate = new Date(last);
+        const todayDate = new Date(today);
+        const diffDays = Math.round((todayDate - lastDate) / 86400000);
+
+        if (diffDays === 0) {
+        } else if (diffDays === 1) {
+          GAME.stats.streak += 1;
+        } else {
+          GAME.stats.streak = 1;
+        }
+      }
+
+      GAME.stats.lastMissionDate = today;
+      if (GAME.stats.streak > GAME.stats.bestStreak) {
+        GAME.stats.bestStreak = GAME.stats.streak;
+      }
+    }
+
+    function updatePersistentStats(distance) {
+      GAME.stats.missions += 1;
+      GAME.stats.totalDistance += distance;
+      GAME.stats.kills += kills;
+      GAME.stats.intel += collectedIntel;
+      GAME.stats.weeklyMissions += 1;
+      maybeUpdateStreak();
+      updateRank();
+      saveStats();
+      renderStats();
+      updateHudMeta();
+    }
+
+    function renderStats() {
+      const weeklyTarget = 5;
+      const weeklyPct = Math.min(100, (GAME.stats.weeklyMissions / weeklyTarget) * 100);
+
+      const html = `
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">RANK</div>
+            <div class="stats-value">${GAME.stats.rank}</div>
+          </div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">MISSIONS</div>
+            <div class="stats-value">${GAME.stats.missions}</div>
+          </div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">STREAK</div>
+            <div class="stats-value">${GAME.stats.streak} DAYS</div>
+          </div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">BEST STREAK</div>
+            <div class="stats-value">${GAME.stats.bestStreak}</div>
+          </div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">TOTAL DISTANCE</div>
+            <div class="stats-value">${GAME.stats.totalDistance.toFixed(1)} MI</div>
+          </div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-top">
+            <div class="stats-tag">WEEKLY OP</div>
+            <div class="stats-value">${GAME.stats.weeklyMissions}/${weeklyTarget}</div>
+          </div>
+          <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" style="width:${weeklyPct}%"></div></div>
+        </div>
+      `;
+
+      el.statsList.innerHTML = html;
+      el.statsListMobile.innerHTML = html;
+    }
+
     function addStartMarker() {
       if (startMarker) map.removeLayer(startMarker);
-      startMarker = L.circleMarker([startPoint.lat, startPoint.lng], {
-        radius: 5,
-        color: '#dbeafe',
-        weight: 1,
-        fillColor: '#60a5fa',
-        fillOpacity: 0.9
-      }).addTo(map).bindPopup('INSERTION POINT');
+      startMarker = L.marker([startPoint.lat, startPoint.lng], {
+        icon: L.divIcon({
+          className: 'route-node-wrap',
+          html: '<div class="route-node start"></div>',
+          iconSize: [15, 15],
+          iconAnchor: [7, 7]
+        })
+      }).addTo(map);
     }
 
     function createAgentIcon() {
@@ -1053,20 +1555,11 @@
       });
     }
 
-    function createIntelIcon() {
-      return L.divIcon({
-        className: 'intel-icon-wrap',
-        html: '<div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#dbeafe,#60a5fa);border:1px solid #0f172a;box-shadow:0 0 10px rgba(59,130,246,0.35);transform:rotate(45deg);"></div>',
-        iconSize: [18, 18],
-        iconAnchor: [9, 9]
-      });
-    }
-
     function updateAgentPosition(lat, lng, accuracy = 0) {
       if (userMarker) {
         userMarker.setLatLng([lat, lng]);
       } else {
-        userMarker = L.marker([lat, lng], { icon: createAgentIcon() }).addTo(map).bindPopup('ACTIVE AGENT');
+        userMarker = L.marker([lat, lng], { icon: createAgentIcon() }).addTo(map);
       }
 
       if (userAccuracyCircle) {
@@ -1083,22 +1576,54 @@
       }
     }
 
+    function clearRouteNodes() {
+      routeNodes.forEach(n => map.removeLayer(n));
+      routeNodes = [];
+    }
+
+    function addRouteNodes(route) {
+      clearRouteNodes();
+      const coords = route.geometry.coordinates;
+      const indexes = [
+        0,
+        Math.floor(coords.length * 0.33),
+        Math.floor(coords.length * 0.66),
+        coords.length - 1
+      ];
+
+      indexes.forEach((idx, i) => {
+        const p = coords[idx];
+        const marker = L.marker([p[1], p[0]], {
+          icon: L.divIcon({
+            className: 'route-node-wrap',
+            html: `<div class="route-node ${i === 0 ? 'start' : ''}"></div>`,
+            iconSize: [14, 14],
+            iconAnchor: [7, 7]
+          })
+        }).addTo(map);
+        routeNodes.push(marker);
+      });
+    }
+
     function clearMissionLayers() {
       if (routeLayer) map.removeLayer(routeLayer);
       if (startMarker) map.removeLayer(startMarker);
       enemyZones.forEach(z => map.removeLayer(z));
       intelMarkers.forEach(m => map.removeLayer(m));
+      clearRouteNodes();
 
       targets = [];
       pickups = [];
       enemyZones = [];
       intelMarkers = [];
+      currentSteps = [];
       kills = 0;
       collectedIntel = 0;
       activeStepIndex = 0;
       missionActive = false;
       missionComplete = false;
       actionBusy = false;
+      currentRouteDistanceMiles = 0;
 
       updateProgressUI();
       renderDirections([]);
@@ -1107,6 +1632,7 @@
       syncActionButtons();
 
       el.crosshair.classList.remove('locked', 'intel-lock');
+      el.crosshairActionPod.classList.remove('visible');
       el.hudOverlay.textContent = 'OVERWATCH // ACTIVE TRACKING';
       el.mapChip.textContent = 'AERIAL FEED // TRACKING STABLE';
 
@@ -1117,37 +1643,32 @@
     }
 
     function applyHostileStyle(zone, eliminated = false, targeted = false) {
-      const baseStroke = eliminated ? '#fde68a' : (targeted ? '#fca5a5' : '#dc2626');
+      const baseStroke = eliminated ? '#fde68a' : (targeted ? '#fca5a5' : 'rgba(239,68,68,0.72)');
       const baseFill = eliminated ? '#f59e0b' : '#ef4444';
+
       zone.setStyle({
         color: baseStroke,
-        weight: targeted ? 3 : 2,
+        weight: targeted ? 2.5 : 1.5,
         fillColor: baseFill,
-        fillOpacity: eliminated ? 0.30 : (targeted ? 0.5 : 0.38)
+        fillOpacity: eliminated ? 0.18 : (targeted ? 0.20 : 0.10)
       });
-
-      if (zone._path) {
-        zone._path.style.opacity = '1';
-      }
     }
 
     function applyIntelStyle(marker, complete = false, targeted = false) {
-      const color = complete ? '#fde68a' : (targeted ? '#fcd34d' : '#bfdbfe');
+      const color = complete ? '#fde68a' : (targeted ? '#fcd34d' : 'rgba(191,219,254,0.85)');
       const fill = complete ? '#f59e0b' : (targeted ? '#f59e0b' : '#3b82f6');
-      if (marker.setStyle) {
-        marker.setStyle({
-          color,
-          fillColor: fill,
-          fillOpacity: complete ? 0.95 : 0.95,
-          radius: targeted ? 8 : 6,
-          weight: 1.5
-        });
-      }
+
+      marker.setStyle({
+        color,
+        fillColor: fill,
+        fillOpacity: complete ? 0.85 : 0.82,
+        radius: targeted ? 7 : 4.5,
+        weight: 1.2
+      });
     }
 
-    function generateEnemyTargets(route) {
+    function generateEnemyTargets(route, count) {
       const coords = route.geometry.coordinates;
-      const count = randInt(2, 5);
       targets = [];
       enemyZones = [];
 
@@ -1160,11 +1681,11 @@
 
         const zone = L.circle([lat, lng], {
           radius,
-          color: '#dc2626',
-          weight: 2,
+          color: 'rgba(239,68,68,0.72)',
+          weight: 1.5,
           fillColor: '#ef4444',
-          fillOpacity: 0.38
-        }).addTo(map).bindPopup(`HOSTILE ${String(i).padStart(2, '0')}`);
+          fillOpacity: 0.10
+        }).addTo(map);
 
         enemyZones.push(zone);
         targets.push({
@@ -1179,11 +1700,10 @@
       }
     }
 
-    function generateIntelPickups(route) {
+    function generateIntelPickups(route, count) {
       const coords = route.geometry.coordinates;
       pickups = [];
       intelMarkers = [];
-      const count = randInt(2, 4);
 
       for (let i = 1; i <= count; i++) {
         const offset = Math.floor(coords.length * 0.06);
@@ -1193,12 +1713,12 @@
         const lng = point[0];
 
         const marker = L.circleMarker([lat, lng], {
-          radius: 6,
-          color: '#bfdbfe',
-          weight: 1.5,
+          radius: 4.5,
+          color: 'rgba(191,219,254,0.85)',
+          weight: 1.2,
           fillColor: '#3b82f6',
-          fillOpacity: 0.95
-        }).addTo(map).bindPopup(`INTEL ${String(i).padStart(2, '0')}`);
+          fillOpacity: 0.82
+        }).addTo(map);
 
         intelMarkers.push(marker);
         pickups.push({
@@ -1229,12 +1749,6 @@
       el.killsMeterMobile.textContent = kills;
       el.progressFill.style.width = `${pct}%`;
       el.progressFillMobile.style.width = `${pct}%`;
-
-      if (missionReadyForExfil()) {
-        missionComplete = true;
-        setActionStatus('MISSION PACKAGE COMPLETE // EXFIL AUTHORIZED');
-        showToast('MISSION COMPLETE', 'All hostiles neutralized and all intel secured.');
-      }
 
       renderTargets();
       renderIntel();
@@ -1279,7 +1793,7 @@
             <div class="pickup-tag">INTEL ${String(p.id).padStart(2, '0')}</div>
             <div class="pickup-distance">${p.distanceMiles} MI</div>
           </div>
-          <div class="pickup-body">${p.complete ? 'FILE SECURED' : (lock && lock.type === 'intel' && lock.item.id === p.id ? 'TARGET PACKAGE LOCKED' : 'ALIGN CROSSHAIR TO GATHER')}</div>
+          <div class="pickup-body">${p.complete ? 'FILE SECURED' : (lock && lock.type === 'intel' && lock.item.id === p.id ? 'PACKAGE LOCKED' : 'ALIGN CROSSHAIR TO GATHER')}</div>
         </div>
       `).join('');
 
@@ -1327,7 +1841,7 @@
 
     function updateFieldInstruction(line) {
       const text = `${line.title}: ${line.body} ${line.distance}`;
-      el.mobileInstructionBody.textContent = text;
+      el.mobileInstructionBody.innerHTML = text;
       showToast(line.title, `${line.body} ${line.distance}`, false);
     }
 
@@ -1403,6 +1917,69 @@
       return hostileLock || intelLock || null;
     }
 
+    function missionReadyForExfil() {
+      return missionActive &&
+        targets.length > 0 &&
+        pickups.length > 0 &&
+        kills === targets.length &&
+        collectedIntel === pickups.length;
+    }
+
+    function syncActionButtons() {
+      const exfilReady = missionReadyForExfil() && !actionBusy;
+      [el.exfilBtn, el.exfilBtnMobile].forEach(btn => btn.disabled = !exfilReady);
+    }
+
+    function updateCrosshairActionPod() {
+      const lock = getCrosshairLock();
+
+      if (!missionActive) {
+        el.crosshairActionPod.classList.remove('visible');
+        el.crosshairStatusMini.textContent = 'NO ACTIVE MISSION';
+        return;
+      }
+
+      if (actionBusy) {
+        el.crosshairActionPod.classList.add('visible');
+        el.crosshairActionLabel.textContent = 'ACTION IN PROGRESS';
+        el.crosshairActionMeta.textContent = 'Stand by.';
+        el.crosshairActionBtn.disabled = true;
+        el.crosshairActionBtn.textContent = 'WORKING';
+        el.crosshairActionBtn.className = 'crosshair-action-btn busy';
+        el.crosshairStatusMini.textContent = 'ACTION IN PROGRESS';
+        return;
+      }
+
+      if (!lock) {
+        el.crosshairActionPod.classList.remove('visible');
+        el.crosshairStatusMini.textContent = missionReadyForExfil()
+          ? 'MISSION COMPLETE // RETURN TO EXFIL'
+          : 'ALIGN CROSSHAIR ON TARGET';
+        return;
+      }
+
+      el.crosshairActionPod.classList.add('visible');
+
+      if (lock.type === 'hostile') {
+        el.crosshairActionLabel.textContent = `HOSTILE ${String(lock.item.id).padStart(2, '0')}`;
+        el.crosshairActionMeta.textContent = `Strike window open • ${Math.round(lock.distance)}m offset`;
+        el.crosshairActionBtn.textContent = 'AIR STRIKE';
+        el.crosshairActionBtn.className = 'crosshair-action-btn danger';
+        el.crosshairActionBtn.disabled = false;
+        el.crosshairActionBtn.onclick = executeAirStrike;
+        el.crosshairStatusMini.textContent = 'PRESS TO ENGAGE';
+        return;
+      }
+
+      el.crosshairActionLabel.textContent = `INTEL ${String(lock.item.id).padStart(2, '0')}`;
+      el.crosshairActionMeta.textContent = `Package aligned • ${Math.round(lock.distance)}m offset`;
+      el.crosshairActionBtn.textContent = 'GATHER INTEL';
+      el.crosshairActionBtn.className = 'crosshair-action-btn intel';
+      el.crosshairActionBtn.disabled = false;
+      el.crosshairActionBtn.onclick = executeGatherIntel;
+      el.crosshairStatusMini.textContent = 'PRESS TO COLLECT';
+    }
+
     function updateTargetingUI() {
       targets.forEach(t => applyHostileStyle(t.marker, t.complete, false));
       pickups.forEach(p => applyIntelStyle(p.marker, p.complete, false));
@@ -1437,33 +2014,7 @@
       renderTargets();
       renderIntel();
       syncActionButtons();
-    }
-
-    function missionReadyForExfil() {
-      return missionActive && targets.length > 0 && pickups.length > 0 &&
-        kills === targets.length && collectedIntel === pickups.length;
-    }
-
-    function syncActionButtons() {
-      const lock = getCrosshairLock();
-      const hostileLocked = !!(lock && lock.type === 'hostile' && !actionBusy);
-      const intelLocked = !!(lock && lock.type === 'intel' && !actionBusy);
-      const exfilReady = missionReadyForExfil() && !actionBusy;
-
-      [
-        el.airStrikeBtn,
-        el.airStrikeBtnMobile
-      ].forEach(btn => btn.disabled = !hostileLocked);
-
-      [
-        el.gatherIntelBtn,
-        el.gatherIntelBtnMobile
-      ].forEach(btn => btn.disabled = !intelLocked);
-
-      [
-        el.exfilBtn,
-        el.exfilBtnMobile
-      ].forEach(btn => btn.disabled = !exfilReady);
+      updateCrosshairActionPod();
     }
 
     function screenPointForLatLng(lat, lng) {
@@ -1487,6 +2038,7 @@
     async function runProgressSequence(duration, statusText) {
       actionBusy = true;
       syncActionButtons();
+      updateCrosshairActionPod();
       setActionStatus(statusText);
       setActionProgress(0);
 
@@ -1508,6 +2060,7 @@
       setActionProgress(0);
       actionBusy = false;
       syncActionButtons();
+      updateCrosshairActionPod();
     }
 
     async function executeAirStrike() {
@@ -1516,6 +2069,8 @@
         showToast('NO STRIKE LOCK', 'Center the crosshair on a hostile zone.');
         return;
       }
+
+      updateCrosshairActionPod();
 
       const target = lock.item;
       el.hudOverlay.textContent = 'OVERWATCH // STRIKE INBOUND';
@@ -1530,7 +2085,6 @@
       target.complete = true;
       kills += 1;
       applyHostileStyle(target.marker, true, false);
-      target.marker.bindPopup(`HOSTILE ${String(target.id).padStart(2, '0')} // ELIMINATED`);
       el.hudOverlay.textContent = 'OVERWATCH // ACTIVE TRACKING';
 
       updateProgressUI();
@@ -1545,6 +2099,8 @@
         return;
       }
 
+      updateCrosshairActionPod();
+
       const intel = lock.item;
       el.hudOverlay.textContent = 'OVERWATCH // DATA ACQUISITION';
       showToast('GATHER INTEL', `Collecting package ${String(intel.id).padStart(2, '0')}.`);
@@ -1554,12 +2110,47 @@
       intel.complete = true;
       collectedIntel += 1;
       applyIntelStyle(intel.marker, true, false);
-      intel.marker.bindPopup(`INTEL ${String(intel.id).padStart(2, '0')} // SECURED`);
       el.hudOverlay.textContent = 'OVERWATCH // ACTIVE TRACKING';
 
       updateProgressUI();
       updateTargetingUI();
       showToast('INTEL SECURED', `Package ${String(intel.id).padStart(2, '0')} uploaded and stored.`);
+    }
+
+    function calculateMissionScore(durationMin, distance) {
+      let score = 0;
+      score += kills * 100;
+      score += collectedIntel * 80;
+
+      const baseline = Math.max(12, distance * 18);
+      if (durationMin <= baseline) score += 200;
+      if (durationMin <= baseline * 0.85) score += 100;
+
+      if (missionReadyForExfil()) score += 150;
+      return Math.round(score);
+    }
+
+    function estimateCalories(distance) {
+      return Math.round(distance * 95);
+    }
+
+    function completeMissionAndDebrief() {
+      if (!GAME.currentMission) return;
+
+      GAME.currentMission.endTime = Date.now();
+      const durationMin = (GAME.currentMission.endTime - GAME.currentMission.startTime) / 60000;
+      const distance = GAME.currentMission.actualDistance || currentRouteDistanceMiles || parseFloat(el.distance.value || '0');
+      const score = calculateMissionScore(durationMin, distance);
+      const calories = estimateCalories(distance);
+
+      updatePersistentStats(distance);
+
+      showDebrief({
+        score,
+        durationMin,
+        distance,
+        calories
+      });
     }
 
     function executeExfil() {
@@ -1592,6 +2183,7 @@
 
       setTimeout(() => setActionProgress(0), 1200);
       syncActionButtons();
+      completeMissionAndDebrief();
     }
 
     function scanTarget() {
@@ -1643,7 +2235,8 @@
       updateTargetingUI();
     }
 
-    async function generateRoute(useReroll = false) {
+    async function buildAndStartRoute(useReroll = false) {
+      hideBriefing();
       setSyncedInputs();
       updateHudMeta();
       setStatus('PATHFINDING...');
@@ -1655,6 +2248,11 @@
 
       clearMissionLayers();
       addStartMarker();
+
+      const pendingMission = GAME.pendingMission || createMission(parseFloat(el.distance.value || '2.0'));
+      GAME.currentMission = pendingMission;
+      GAME.pendingMission = null;
+      GAME.currentMission.startTime = Date.now();
 
       const targetMiles = parseFloat(el.distance.value || '2.0');
       const targetMeters = milesToMeters(targetMiles);
@@ -1679,13 +2277,23 @@
         currentSteps = (route.legs?.flatMap(leg => leg.steps || []) || []).slice(0, 12);
 
         routeLayer = L.geoJSON(route.geometry, {
-          style: { color: '#2563eb', weight: 5, opacity: 0.92 }
+          style: {
+            color: '#7c8fbc',
+            weight: 6,
+            opacity: 0.82,
+            lineCap: 'round',
+            lineJoin: 'round'
+          }
         }).addTo(map);
 
+        addRouteNodes(route);
         map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
 
-        generateEnemyTargets(route);
-        generateIntelPickups(route);
+        currentRouteDistanceMiles = metersToMiles(route.distance);
+        GAME.currentMission.actualDistance = currentRouteDistanceMiles;
+
+        generateEnemyTargets(route, GAME.currentMission.hostiles);
+        generateIntelPickups(route, GAME.currentMission.intel);
         renderDirections(currentSteps);
 
         activeStepIndex = 0;
@@ -1693,7 +2301,7 @@
           setActiveDirection(0);
         }
 
-        const actual = metersToMiles(route.distance).toFixed(2);
+        const actual = currentRouteDistanceMiles.toFixed(2);
         el.hudActual.textContent = `ACTUAL ${actual} MI`;
         el.routeDistanceText.textContent = `${actual} MI`;
         el.routeDistanceTextMobile.textContent = `${actual} MI`;
@@ -1703,7 +2311,7 @@
 
         setStatus(`ROUTE ACQUIRED<br><span class="coords">DIST: ${actual} MI // HOSTILES LIVE // INTEL LIVE</span>`);
         setActionStatus('MISSION LIVE // ALIGN CROSSHAIR ON TARGET');
-        showToast('MISSION LIVE', `Route armed with ${targets.length} hostiles and ${pickups.length} intel packages.`);
+        showToast('MISSION LIVE', `Operation ${GAME.currentMission.name} armed with ${targets.length} hostiles and ${pickups.length} intel packages.`);
 
         updateProgressUI();
         updateTargetingUI();
@@ -1716,6 +2324,19 @@
         setStatus('ROUTING FAILURE');
         setActionStatus('ROUTE GENERATION FAILED');
       }
+    }
+
+    function prepareMission(useReroll = false) {
+      if (!startPoint) {
+        setStatus('ACQUIRE POSITION FIRST');
+        showToast('GPS REQUIRED', 'Acquire position before mission generation.');
+        return;
+      }
+
+      const mission = createMission(parseFloat(el.distance.value || '2.0'));
+      GAME.pendingMission = mission;
+      showBriefing(mission);
+      el.briefingStartBtn.onclick = () => buildAndStartRoute(useReroll);
     }
 
     function acquirePosition() {
@@ -1760,44 +2381,27 @@
       updateTargetingUI();
     });
 
-    (function addSpyDecor() {
-      const deco = [
-        { lat: 32.7782, lng: -96.7994, emoji: '🍸', label: 'SAFEHOUSE BAR' },
-        { lat: 32.7748, lng: -96.7951, emoji: '🔫', label: 'ARMORY' },
-        { lat: 32.7801, lng: -96.7926, emoji: '🕶️', label: 'SURVEILLANCE POST' }
-      ];
-
-      deco.forEach(d => {
-        L.marker([d.lat, d.lng], {
-          icon: L.divIcon({
-            className: 'spy-deco',
-            html: `<div style="font-size:18px;text-shadow:0 0 8px rgba(255,255,255,0.15),0 0 12px rgba(0,0,0,0.55);">${d.emoji}</div>`,
-            iconSize: [18, 18],
-            iconAnchor: [9, 9]
-          })
-        }).addTo(map).bindPopup(d.label);
-      });
-    })();
-
     document.getElementById('locateBtn').onclick = acquirePosition;
     document.getElementById('mobileLocateBtn').onclick = acquirePosition;
-    document.getElementById('generateBtn').onclick = () => generateRoute(false);
-    document.getElementById('mobileGenerateBtn').onclick = () => generateRoute(false);
-    document.getElementById('rerollBtn').onclick = () => generateRoute(true);
-    document.getElementById('mobileRerollBtn').onclick = () => generateRoute(true);
+    document.getElementById('generateBtn').onclick = () => prepareMission(false);
+    document.getElementById('mobileGenerateBtn').onclick = () => prepareMission(false);
+    document.getElementById('rerollBtn').onclick = () => prepareMission(true);
+    document.getElementById('mobileRerollBtn').onclick = () => prepareMission(true);
     document.getElementById('centerBtn').onclick = centerOnAgent;
     document.getElementById('mobileCenterBtn').onclick = centerOnAgent;
 
-    el.airStrikeBtn.onclick = executeAirStrike;
-    el.airStrikeBtnMobile.onclick = executeAirStrike;
-    el.gatherIntelBtn.onclick = executeGatherIntel;
-    el.gatherIntelBtnMobile.onclick = executeGatherIntel;
     el.exfilBtn.onclick = executeExfil;
     el.exfilBtnMobile.onclick = executeExfil;
     el.scanBtn.onclick = scanTarget;
     el.scanBtnMobile.onclick = scanTarget;
 
     el.toggleDrawerBtn.onclick = toggleDrawer;
+    el.briefingCancelBtn.onclick = hideBriefing;
+    el.debriefCloseBtn.onclick = hideDebrief;
+    el.debriefNewMissionBtn.onclick = () => {
+      hideDebrief();
+      prepareMission(false);
+    };
 
     el.distance.addEventListener('input', () => setSyncedInputs('desktop'));
     el.distanceMobile.addEventListener('input', () => setSyncedInputs('mobile'));
@@ -1807,6 +2411,7 @@
     setSyncedInputs();
     updateProgressUI();
     renderDirections([]);
+    renderStats();
     updateTargetingUI();
   </script>
 </body>
