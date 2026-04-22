@@ -23,35 +23,24 @@
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; }
 body { overflow: hidden; }
 button, input, select { font: inherit; }
-.app { display: grid; grid-template-columns: 390px 1fr; height: 100vh; }
+.app { display: grid; grid-template-columns: 360px 1fr; height: 100vh; }
 .sidebar {
-  position: relative; z-index: 20; padding: 18px;
+  position: relative; z-index: 20; padding: 16px;
   background: linear-gradient(180deg, rgba(8,10,14,0.98), rgba(4,5,7,0.98)), repeating-linear-gradient(0deg, rgba(110,168,255,0.04) 0px, rgba(110,168,255,0.04) 1px, transparent 1px, transparent 26px);
   border-right: 1px solid var(--line); overflow-y: auto;
 }
-.header { margin-bottom: 14px; }
+.header { margin-bottom: 12px; }
 .header h1 { margin: 0; font-size: 18px; letter-spacing: 3px; color: #f4f8ff; }
 .header p { margin: 6px 0 0; color: var(--muted); font-size: 11px; letter-spacing: 1.4px; }
-.section-label { margin-top: 14px; margin-bottom: 6px; color: var(--muted); font-size: 10px; letter-spacing: 2px; }
-input, select, button {
-  width: 100%; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); padding: 12px;
-}
-input::placeholder { color: #53627f; }
-input:focus, select:focus {
-  outline: none; border-color: var(--line-strong);
-  box-shadow: 0 0 0 1px rgba(116,169,255,0.18), 0 0 20px rgba(47,101,200,0.08);
-}
+.section-label { margin-top: 12px; margin-bottom: 6px; color: var(--muted); font-size: 10px; letter-spacing: 2px; }
+input, select, button { width: 100%; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); padding: 12px; }
+input:focus, select:focus { outline: none; border-color: var(--line-strong); box-shadow: 0 0 0 1px rgba(116,169,255,0.18), 0 0 20px rgba(47,101,200,0.08); }
 .button-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-button {
-  cursor: pointer; background: linear-gradient(90deg, #0a1222, #163871); border: 1px solid rgba(116,169,255,0.5); color: #f4f8ff; letter-spacing: 1px;
-  transition: transform .14s ease, opacity .14s ease, box-shadow .14s ease;
-}
+button { cursor: pointer; background: linear-gradient(90deg, #0a1222, #163871); border: 1px solid rgba(116,169,255,0.5); color: #f4f8ff; letter-spacing: 1px; transition: transform .14s ease, opacity .14s ease, box-shadow .14s ease; }
 button.secondary { background: var(--panel-2); }
 button:hover { transform: translateY(-1px); opacity: .94; box-shadow: 0 0 18px rgba(110,168,255,0.12); }
 button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
-.card {
-  margin-top: 14px; border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-}
+.card { margin-top: 12px; border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
 .card-title { color: var(--muted); font-size: 10px; letter-spacing: 2px; margin-bottom: 10px; }
 .status-text { font-size: 12px; line-height: 1.45; }
 .coords { font-size: 10px; color: #6f84aa; margin-top: 4px; }
@@ -61,14 +50,14 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
 .metric-value { margin-top: 5px; font-size: 18px; }
 .progress-bar { margin-top: 10px; width: 100%; height: 10px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.05); border: 1px solid rgba(116,169,255,0.12); }
 .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0f4ac4, #6ea8ff); box-shadow: 0 0 12px rgba(110,168,255,0.45); transition: width .25s ease; }
-.objective-list { display: grid; gap: 8px; }
-.objective-item, .direction-item { padding: 10px; border-radius: 8px; background: rgba(8,11,16,0.92); border: 1px solid rgba(116,169,255,0.14); font-size: 12px; }
-.objective-item.complete { border-color: rgba(34,197,94,0.35); background: rgba(8,20,13,0.9); }
-.objective-top, .direction-top { display: flex; justify-content: space-between; gap: 10px; }
-.objective-tag, .direction-tag { color: var(--blue); font-size: 10px; letter-spacing: 1.6px; }
-.objective-distance, .direction-distance { color: var(--muted); font-size: 10px; }
-.objective-body, .direction-body { margin-top: 6px; line-height: 1.45; }
-.directions-scroll { display: grid; gap: 8px; max-height: 220px; overflow-y: auto; }
+.objective-list, .pickup-list, .directions-scroll { display: grid; gap: 8px; }
+.objective-item, .pickup-item, .direction-item { padding: 10px; border-radius: 8px; background: rgba(8,11,16,0.92); border: 1px solid rgba(116,169,255,0.14); font-size: 12px; }
+.objective-item.complete, .pickup-item.complete { border-color: rgba(34,197,94,0.35); background: rgba(8,20,13,0.9); }
+.objective-top, .pickup-top, .direction-top { display: flex; justify-content: space-between; gap: 10px; }
+.objective-tag, .pickup-tag, .direction-tag { color: var(--blue); font-size: 10px; letter-spacing: 1.6px; }
+.objective-distance, .pickup-distance, .direction-distance { color: var(--muted); font-size: 10px; }
+.objective-body, .pickup-body, .direction-body { margin-top: 6px; line-height: 1.45; }
+.directions-scroll { max-height: 180px; overflow-y: auto; }
 .direction-item.active { border-color: rgba(245,158,11,0.45); box-shadow: 0 0 0 1px rgba(245,158,11,0.12); }
 .map-shell { position: relative; height: 100%; width: 100%; background: #030405; }
 #map { height: 100%; width: 100%; filter: grayscale(1) contrast(1.33) brightness(0.76) saturate(0.72); }
@@ -86,29 +75,32 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
 .hud-top-left { top: 18px; left: 20px; }
 .hud-top-right { top: 18px; right: 20px; text-align: right; }
 .hud-bottom-right { bottom: 18px; right: 20px; text-align: right; }
-.hud-panel { min-width: 170px; background: rgba(3,5,8,0.74); border: 1px solid rgba(116,169,255,0.18); padding: 10px 12px; backdrop-filter: blur(2px); }
+.hud-panel { min-width: 160px; background: rgba(3,5,8,0.74); border: 1px solid rgba(116,169,255,0.18); padding: 10px 12px; backdrop-filter: blur(2px); }
 .hud-title { color: var(--muted); font-size: 10px; margin-bottom: 6px; }
 .mobile-drawer { display: none; }
+.mission-toast {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 15;
+  min-width: min(88vw, 420px); max-width: min(88vw, 420px);
+  background: rgba(6,8,12,0.94); border: 1px solid rgba(116,169,255,0.25); border-radius: 12px; padding: 12px 14px; backdrop-filter: blur(8px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35); display: none;
+}
+.toast-label { color: var(--muted); font-size: 10px; letter-spacing: 2px; }
+.toast-body { margin-top: 6px; font-size: 12px; line-height: 1.45; }
 .leaflet-control-zoom a { background: rgba(5,7,10,0.92) !important; color: #dce8ff !important; border-bottom: 1px solid rgba(116,169,255,0.16) !important; }
 .leaflet-control-zoom { border: 1px solid rgba(116,169,255,0.16) !important; box-shadow: none !important; }
 @media (max-width: 980px) {
   .app { display: block; position: relative; height: 100vh; }
   .sidebar { display: none; }
   .map-shell { height: 100vh; }
-  .mobile-drawer {
-    display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-    background: linear-gradient(180deg, rgba(7,9,12,0.92), rgba(4,5,7,0.98)); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0;
-    padding: 10px 12px calc(14px + env(safe-area-inset-bottom)); backdrop-filter: blur(10px); max-height: 66vh; overflow-y: auto;
-  }
+  .mobile-drawer { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: linear-gradient(180deg, rgba(7,9,12,0.92), rgba(4,5,7,0.98)); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; padding: 10px 12px calc(14px + env(safe-area-inset-bottom)); backdrop-filter: blur(10px); max-height: 62vh; overflow-y: auto; }
   .drawer-grab { width: 54px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.14); margin: 0 auto 10px; }
   .drawer-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
   .drawer-heading { font-size: 13px; letter-spacing: 2px; }
   .mobile-collapsed .drawer-body { display: none; }
-  .floating-button {
-    position: fixed; z-index: 28; left: 12px; right: 12px; bottom: calc(88px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
+  .floating-button { position: fixed; z-index: 28; left: 12px; right: 12px; bottom: calc(88px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .hud-top-left, .hud-top-right, .hud-bottom-right { font-size: 10px; }
-  .hud-panel { min-width: 136px; padding: 8px 10px; }
+  .hud-panel { min-width: 128px; padding: 8px 10px; }
+  .mission-toast { bottom: calc(170px + env(safe-area-inset-bottom)); }
 }
 </style>
 </head>
@@ -117,17 +109,15 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
   <div class="sidebar">
     <div class="header">
       <h1>OPS // ROUTE INTEL</h1>
-      <p>FIELD NAVIGATION SYSTEM</p>
+      <p>FAST FIELD NAVIGATION SYSTEM</p>
     </div>
     <div class="section-label">MISSION PARAMETERS</div>
-    <input id="distance" type="number" min="0.5" max="15" step="0.1" value="2.5" />
-    <div class="section-label">INSERT START LOCATION</div>
-    <input id="manualLocation" placeholder="e.g. Dallas, TX or address" />
+    <input id="distance" type="number" min="0.5" max="10" step="0.1" value="2.0" />
     <div class="section-label">ROUTE PROFILE</div>
     <select id="mode">
       <option value="balanced">BALANCED</option>
-      <option value="park">SCENIC</option>
-      <option value="landmarks">INTEL HEAVY</option>
+      <option value="night">NIGHT STREETS</option>
+      <option value="scenic">SCENIC</option>
     </select>
     <div class="button-row">
       <button id="locateBtn">ACQUIRE POSITION</button>
@@ -135,7 +125,7 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
     </div>
     <div class="button-row">
       <button id="rerollBtn" class="secondary">REROLL PATH</button>
-      <button id="loadIntelBtn" class="secondary">SCAN FOR INTEL</button>
+      <button id="centerBtn" class="secondary">CENTER ON AGENT</button>
     </div>
     <div class="card">
       <div class="card-title">SYSTEM STATUS</div>
@@ -145,20 +135,22 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
     <div class="card">
       <div class="card-title">MISSION PROGRESS</div>
       <div class="meter-grid">
-        <div class="metric">
-          <div class="metric-label">OBJECTIVES</div>
-          <div class="metric-value"><span id="objectiveProgress">0</span>/<span id="objectiveTotal">0</span></div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">ENEMIES KILLED</div>
-          <div class="metric-value" id="killsMeter">0</div>
-        </div>
+        <div class="metric"><div class="metric-label">TARGETS</div><div class="metric-value"><span id="targetProgress">0</span>/<span id="targetTotal">0</span></div></div>
+        <div class="metric"><div class="metric-label">ENEMIES KILLED</div><div class="metric-value" id="killsMeter">0</div></div>
+      </div>
+      <div class="meter-grid" style="margin-top:8px;">
+        <div class="metric"><div class="metric-label">INTEL</div><div class="metric-value"><span id="intelProgress">0</span>/<span id="intelTotal">0</span></div></div>
+        <div class="metric"><div class="metric-label">ROUTE</div><div class="metric-value" id="routeDistanceText">-- MI</div></div>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="card">
-      <div class="card-title">MISSION OBJECTIVES</div>
-      <div class="objective-list" id="objectiveList"><div class="objective-item"><div class="objective-body">NO OBJECTIVES ASSIGNED</div></div></div>
+      <div class="card-title">TARGETS</div>
+      <div class="objective-list" id="targetList"><div class="objective-item"><div class="objective-body">NO TARGETS ASSIGNED</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">INTEL PICKUPS</div>
+      <div class="pickup-list" id="pickupList"><div class="pickup-item"><div class="pickup-body">NO INTEL ASSIGNED</div></div></div>
     </div>
     <div class="card">
       <div class="card-title">FIELD INSTRUCTIONS</div>
@@ -174,10 +166,15 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
     <div class="hud hud-top-left"><div class="hud-panel"><div class="hud-title">OP STATUS</div><div id="hudStatus">STANDBY</div><div class="coords" id="hudCoords">LAT ---.---- / LNG ---.----</div></div></div>
     <div class="hud hud-top-right"><div class="hud-panel"><div class="hud-title">ENVIRONMENT</div><div id="hudTime">LOCAL 00:00:00</div><div class="coords" id="hudProfile">PROFILE // BALANCED</div></div></div>
     <div class="hud hud-bottom-right"><div class="hud-panel"><div class="hud-title">MISSION DATA</div><div id="hudDistance">TARGET -- MI</div><div class="coords" id="hudActual">ACTUAL -- MI</div></div></div>
+    <div class="mission-toast" id="missionToast"><div class="toast-label" id="toastLabel">FIELD INSTRUCTION</div><div class="toast-body" id="toastBody">Awaiting route.</div></div>
   </div>
   <div class="floating-button" id="mobileButtons">
     <button id="mobileLocateBtn">ACQUIRE POSITION</button>
     <button id="mobileGenerateBtn">GENERATE ROUTE</button>
+  </div>
+  <div class="mission-toast" id="mobileInstructionPanel" style="display:none; bottom: calc(88px + env(safe-area-inset-bottom)); left: 12px; right: 12px; transform: none; min-width: auto; max-width: none;">
+    <div class="toast-label">FIELD INSTRUCTION</div>
+    <div class="toast-body" id="mobileInstructionBody">Awaiting route.</div>
   </div>
   <div class="mobile-drawer mobile-collapsed" id="mobileDrawer">
     <div class="drawer-grab"></div>
@@ -187,33 +184,32 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
     </div>
     <div class="drawer-body">
       <div class="section-label">MISSION PARAMETERS</div>
-      <input id="distanceMobile" type="number" min="0.5" max="15" step="0.1" value="2.5" />
-      <div class="section-label">INSERT START LOCATION</div>
-      <input id="manualLocationMobile" placeholder="e.g. Dallas, TX or address" />
+      <input id="distanceMobile" type="number" min="0.5" max="10" step="0.1" value="2.0" />
       <div class="section-label">ROUTE PROFILE</div>
       <select id="modeMobile">
         <option value="balanced">BALANCED</option>
-        <option value="park">SCENIC</option>
-        <option value="landmarks">INTEL HEAVY</option>
+        <option value="night">NIGHT STREETS</option>
+        <option value="scenic">SCENIC</option>
       </select>
       <div class="button-row">
         <button id="mobileRerollBtn" class="secondary">REROLL PATH</button>
-        <button id="mobileIntelBtn" class="secondary">SCAN FOR INTEL</button>
+        <button id="mobileCenterBtn" class="secondary">CENTER ON AGENT</button>
       </div>
-      <div class="card">
-        <div class="card-title">SYSTEM STATUS</div>
-        <div class="status-text" id="statusMobile">SYSTEM IDLE</div>
-        <div class="coords" id="coordsTextMobile">LAT ---.---- / LNG ---.----</div>
-      </div>
+      <div class="card"><div class="card-title">SYSTEM STATUS</div><div class="status-text" id="statusMobile">SYSTEM IDLE</div><div class="coords" id="coordsTextMobile">LAT ---.---- / LNG ---.----</div></div>
       <div class="card">
         <div class="card-title">MISSION PROGRESS</div>
         <div class="meter-grid">
-          <div class="metric"><div class="metric-label">OBJECTIVES</div><div class="metric-value"><span id="objectiveProgressMobile">0</span>/<span id="objectiveTotalMobile">0</span></div></div>
+          <div class="metric"><div class="metric-label">TARGETS</div><div class="metric-value"><span id="targetProgressMobile">0</span>/<span id="targetTotalMobile">0</span></div></div>
           <div class="metric"><div class="metric-label">ENEMIES KILLED</div><div class="metric-value" id="killsMeterMobile">0</div></div>
+        </div>
+        <div class="meter-grid" style="margin-top:8px;">
+          <div class="metric"><div class="metric-label">INTEL</div><div class="metric-value"><span id="intelProgressMobile">0</span>/<span id="intelTotalMobile">0</span></div></div>
+          <div class="metric"><div class="metric-label">ROUTE</div><div class="metric-value" id="routeDistanceTextMobile">-- MI</div></div>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressFillMobile"></div></div>
       </div>
-      <div class="card"><div class="card-title">MISSION OBJECTIVES</div><div class="objective-list" id="objectiveListMobile"><div class="objective-item"><div class="objective-body">NO OBJECTIVES ASSIGNED</div></div></div></div>
+      <div class="card"><div class="card-title">TARGETS</div><div class="objective-list" id="targetListMobile"><div class="objective-item"><div class="objective-body">NO TARGETS ASSIGNED</div></div></div></div>
+      <div class="card"><div class="card-title">INTEL PICKUPS</div><div class="pickup-list" id="pickupListMobile"><div class="pickup-item"><div class="pickup-body">NO INTEL ASSIGNED</div></div></div></div>
       <div class="card"><div class="card-title">FIELD INSTRUCTIONS</div><div class="directions-scroll" id="directionsListMobile"><div class="direction-item"><div class="direction-body">NO ROUTE LOADED</div></div></div></div>
     </div>
   </div>
@@ -222,6 +218,7 @@ button:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow
 <script>
 const map = L.map('map', { zoomControl: true }).setView([32.7767, -96.7970], 13);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 20, attribution: '&copy; OpenStreetMap contributors &copy; CARTO' }).addTo(map);
+
 let startPoint = null;
 let routeLayer = null;
 let startMarker = null;
@@ -230,26 +227,39 @@ let lastRoute = null;
 let currentSteps = [];
 let targetMarkers = [];
 let targets = [];
-let enemyZones = [];
 let intelMarkers = [];
-let intelLoaded = false;
-let completedTargets = 0;
+let pickups = [];
+let enemyZones = [];
+let collectedIntel = 0;
 let kills = 0;
 let watchId = null;
 let rerollSeed = 0;
+let activeStepIndex = 0;
+let lastToastKey = '';
+
 const el = {
-  distance: document.getElementById('distance'), distanceMobile: document.getElementById('distanceMobile'), manualLocation: document.getElementById('manualLocation'), manualLocationMobile: document.getElementById('manualLocationMobile'),
-  mode: document.getElementById('mode'), modeMobile: document.getElementById('modeMobile'), status: document.getElementById('status'), statusMobile: document.getElementById('statusMobile'),
-  coordsText: document.getElementById('coordsText'), coordsTextMobile: document.getElementById('coordsTextMobile'), hudStatus: document.getElementById('hudStatus'), hudCoords: document.getElementById('hudCoords'),
-  hudTime: document.getElementById('hudTime'), hudProfile: document.getElementById('hudProfile'), hudDistance: document.getElementById('hudDistance'), hudActual: document.getElementById('hudActual'),
-  objectiveList: document.getElementById('objectiveList'), objectiveListMobile: document.getElementById('objectiveListMobile'), directionsList: document.getElementById('directionsList'), directionsListMobile: document.getElementById('directionsListMobile'),
-  objectiveProgress: document.getElementById('objectiveProgress'), objectiveProgressMobile: document.getElementById('objectiveProgressMobile'), objectiveTotal: document.getElementById('objectiveTotal'), objectiveTotalMobile: document.getElementById('objectiveTotalMobile'),
-  killsMeter: document.getElementById('killsMeter'), killsMeterMobile: document.getElementById('killsMeterMobile'), progressFill: document.getElementById('progressFill'), progressFillMobile: document.getElementById('progressFillMobile'),
-  mobileDrawer: document.getElementById('mobileDrawer'), toggleDrawerBtn: document.getElementById('toggleDrawerBtn')
+  distance: document.getElementById('distance'), distanceMobile: document.getElementById('distanceMobile'),
+  mode: document.getElementById('mode'), modeMobile: document.getElementById('modeMobile'),
+  status: document.getElementById('status'), statusMobile: document.getElementById('statusMobile'),
+  coordsText: document.getElementById('coordsText'), coordsTextMobile: document.getElementById('coordsTextMobile'),
+  hudStatus: document.getElementById('hudStatus'), hudCoords: document.getElementById('hudCoords'), hudTime: document.getElementById('hudTime'), hudProfile: document.getElementById('hudProfile'), hudDistance: document.getElementById('hudDistance'), hudActual: document.getElementById('hudActual'),
+  targetList: document.getElementById('targetList'), targetListMobile: document.getElementById('targetListMobile'),
+  pickupList: document.getElementById('pickupList'), pickupListMobile: document.getElementById('pickupListMobile'),
+  directionsList: document.getElementById('directionsList'), directionsListMobile: document.getElementById('directionsListMobile'),
+  targetProgress: document.getElementById('targetProgress'), targetProgressMobile: document.getElementById('targetProgressMobile'),
+  targetTotal: document.getElementById('targetTotal'), targetTotalMobile: document.getElementById('targetTotalMobile'),
+  intelProgress: document.getElementById('intelProgress'), intelProgressMobile: document.getElementById('intelProgressMobile'),
+  intelTotal: document.getElementById('intelTotal'), intelTotalMobile: document.getElementById('intelTotalMobile'),
+  killsMeter: document.getElementById('killsMeter'), killsMeterMobile: document.getElementById('killsMeterMobile'),
+  routeDistanceText: document.getElementById('routeDistanceText'), routeDistanceTextMobile: document.getElementById('routeDistanceTextMobile'),
+  progressFill: document.getElementById('progressFill'), progressFillMobile: document.getElementById('progressFillMobile'),
+  mobileDrawer: document.getElementById('mobileDrawer'), toggleDrawerBtn: document.getElementById('toggleDrawerBtn'),
+  missionToast: document.getElementById('missionToast'), toastLabel: document.getElementById('toastLabel'), toastBody: document.getElementById('toastBody'), mobileButtons: document.getElementById('mobileButtons'), mobileInstructionPanel: document.getElementById('mobileInstructionPanel'), mobileInstructionBody: document.getElementById('mobileInstructionBody')
 };
+
 function setSyncedInputs(source = null) {
-  if (source !== 'desktop') { el.distance.value = el.distanceMobile.value; el.manualLocation.value = el.manualLocationMobile.value; el.mode.value = el.modeMobile.value; }
-  if (source !== 'mobile') { el.distanceMobile.value = el.distance.value; el.manualLocationMobile.value = el.manualLocation.value; el.modeMobile.value = el.mode.value; }
+  if (source !== 'desktop') { el.distance.value = el.distanceMobile.value; el.mode.value = el.modeMobile.value; }
+  if (source !== 'mobile') { el.distanceMobile.value = el.distance.value; el.modeMobile.value = el.mode.value; }
   updateHudMeta();
 }
 function setStatus(text, coordsText = '') {
@@ -272,22 +282,21 @@ function tickClock() {
   el.hudTime.textContent = `LOCAL ${time}`;
 }
 setInterval(tickClock, 1000); tickClock();
+
 function milesToMeters(m) { return m * 1609.34; }
 function metersToMiles(m) { return m / 1609.34; }
 function metersBetween(lat1, lon1, lat2, lon2) {
-  const R = 6371000; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+  const R = 6371000;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-async function geocode(query) {
-  setStatus('RESOLVING LOCATION...');
-  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`);
-  const data = await res.json();
-  if (!data.length) return null;
-  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-}
 function randomPoint(lat, lng, distanceMeters, seedShift = 0) {
-  const r = 6371000; const br = ((Math.random() + seedShift) % 1) * 2 * Math.PI; const lat1 = lat * Math.PI / 180; const lng1 = lng * Math.PI / 180;
+  const r = 6371000;
+  const br = ((Math.random() + seedShift) % 1) * 2 * Math.PI;
+  const lat1 = lat * Math.PI / 180;
+  const lng1 = lng * Math.PI / 180;
   const lat2 = Math.asin(Math.sin(lat1) * Math.cos(distanceMeters / r) + Math.cos(lat1) * Math.sin(distanceMeters / r) * Math.cos(br));
   const lng2 = lng1 + Math.atan2(Math.sin(br) * Math.sin(distanceMeters / r) * Math.cos(lat1), Math.cos(distanceMeters / r) - Math.sin(lat1) * Math.sin(lat2));
   return { lat: lat2 * 180 / Math.PI, lng: lng2 * 180 / Math.PI };
@@ -295,52 +304,109 @@ function randomPoint(lat, lng, distanceMeters, seedShift = 0) {
 async function fetchRoute(points) {
   const coords = points.map(p => `${p.lng},${p.lat}`).join(';');
   const url = `https://router.project-osrm.org/route/v1/foot/${coords}?overview=full&geometries=geojson&steps=true`;
-  const res = await fetch(url); const data = await res.json();
+  const res = await fetch(url);
+  const data = await res.json();
   if (!data.routes || !data.routes[0]) throw new Error('ROUTING FAILURE');
   return data.routes[0];
 }
+function showToast(label, body) {
+  const key = `${label}__${body}`;
+  if (key === lastToastKey) return;
+  lastToastKey = key;
+  el.toastLabel.textContent = label;
+  el.toastBody.textContent = body;
+  el.missionToast.style.display = 'block';
+  if (el.mobileInstructionBody) el.mobileInstructionBody.textContent = body;
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => { el.missionToast.style.display = 'none'; lastToastKey = ''; }, 4000);
+}
 function clearMissionLayers() {
-  if (routeLayer) map.removeLayer(routeLayer); if (startMarker) map.removeLayer(startMarker);
-  targetMarkers.forEach(m => map.removeLayer(m)); enemyZones.forEach(z => map.removeLayer(z)); intelMarkers.forEach(m => map.removeLayer(m));
-  targetMarkers = []; enemyZones = []; intelMarkers = []; targets = []; intelLoaded = false; completedTargets = 0; kills = 0; updateProgressUI();
+  if (routeLayer) map.removeLayer(routeLayer);
+  if (startMarker) map.removeLayer(startMarker);
+  targetMarkers.forEach(m => map.removeLayer(m));
+  intelMarkers.forEach(m => map.removeLayer(m));
+  enemyZones.forEach(z => map.removeLayer(z));
+  targetMarkers = []; intelMarkers = []; enemyZones = []; targets = []; pickups = [];
+  collectedIntel = 0; kills = 0; activeStepIndex = 0; updateProgressUI();
 }
 function addStartMarker() {
   if (startMarker) map.removeLayer(startMarker);
   startMarker = L.circleMarker([startPoint.lat, startPoint.lng], { radius: 7, color: '#dbeafe', weight: 1, fillColor: '#60a5fa', fillOpacity: 0.95 }).addTo(map).bindPopup('INSERTION POINT');
 }
-function generateTargets(route) {
-  const coords = route.geometry.coordinates; const count = 3; targets = [];
+function generateEnemyTargets(route) {
+  const coords = route.geometry.coordinates;
+  const count = 3;
+  targets = [];
+  enemyZones = [];
+
   for (let i = 1; i <= count; i++) {
-    const index = Math.min(coords.length - 1, Math.floor((coords.length / (count + 1)) * i)); const point = coords[index]; const lat = point[1]; const lng = point[0];
-    const marker = L.circleMarker([lat, lng], { radius: 7, color: '#86efac', weight: 1, fillColor: '#22c55e', fillOpacity: 0.95 }).addTo(map).bindPopup(`TARGET ${String(i).padStart(2, '0')}`);
-    targetMarkers.push(marker);
-    targets.push({ id: i, lat, lng, complete: false, marker, distanceMiles: metersToMiles((route.distance / (count + 1)) * i).toFixed(1) });
-  }
-}
-function generateEnemyZones(center) {
-  const count = 2; const baseRadius = 170; enemyZones = [];
-  for (let i = 0; i < count; i++) {
-    const point = randomPoint(center.lat, center.lng, 450 + (i * 140), (rerollSeed * 0.17) + i * 0.21);
-    const zone = L.circle([point.lat, point.lng], { radius: baseRadius + (i * 35), color: '#ef4444', weight: 1, fillColor: '#ef4444', fillOpacity: 0.14 }).addTo(map).bindPopup(`DETECTION ZONE ${i + 1}`);
+    const index = Math.min(coords.length - 1, Math.floor((coords.length / (count + 1)) * i));
+    const point = coords[index];
+    const lat = point[1], lng = point[0];
+    const radius = 32;
+
+    const zone = L.circle([lat, lng], {
+      radius: radius,
+      color: '#ef4444',
+      weight: 1,
+      fillColor: '#ef4444',
+      fillOpacity: 0.22
+    }).addTo(map).bindPopup(`HOSTILE ${String(i).padStart(2, '0')}`);
+
     enemyZones.push(zone);
+    targets.push({ id: i, lat, lng, radius, complete: false, marker: zone, distanceMiles: metersToMiles((route.distance / (count + 1)) * i).toFixed(1) });
   }
 }
+
+function generateIntelPickups(route) {
+  const coords = route.geometry.coordinates;
+  pickups = [];
+  intelMarkers = [];
+  const count = 2;
+
+  for (let i = 1; i <= count; i++) {
+    const index = Math.min(coords.length - 1, Math.floor((coords.length / (count + 1)) * i + coords.length * 0.08));
+    const point = coords[index];
+    const lat = point[1], lng = point[0];
+    const marker = L.circleMarker([lat, lng], { radius: 6, color: '#bfdbfe', weight: 1, fillColor: '#3b82f6', fillOpacity: 0.95 }).addTo(map).bindPopup(`INTEL ${String(i).padStart(2, '0')}`);
+    intelMarkers.push(marker);
+    pickups.push({ id: i, lat, lng, complete: false, marker, distanceMiles: metersToMiles((route.distance / (count + 1)) * i).toFixed(1) });
+  }
+}
+
 function updateProgressUI() {
-  const total = targets.length; const pct = total ? (completedTargets / total) * 100 : 0;
-  el.objectiveProgress.textContent = completedTargets; el.objectiveProgressMobile.textContent = completedTargets; el.objectiveTotal.textContent = total; el.objectiveTotalMobile.textContent = total;
-  el.killsMeter.textContent = kills; el.killsMeterMobile.textContent = kills; el.progressFill.style.width = `${pct}%`; el.progressFillMobile.style.width = `${pct}%`;
-  renderObjectives();
+  const totalTasks = targets.length + pickups.length;
+  const doneTasks = kills + collectedIntel;
+  const pct = totalTasks ? (doneTasks / totalTasks) * 100 : 0;
+  el.targetProgress.textContent = kills; el.targetProgressMobile.textContent = kills;
+  el.targetTotal.textContent = targets.length; el.targetTotalMobile.textContent = targets.length;
+  el.intelProgress.textContent = collectedIntel; el.intelProgressMobile.textContent = collectedIntel;
+  el.intelTotal.textContent = pickups.length; el.intelTotalMobile.textContent = pickups.length;
+  el.killsMeter.textContent = kills; el.killsMeterMobile.textContent = kills;
+  el.progressFill.style.width = `${pct}%`; el.progressFillMobile.style.width = `${pct}%`;
+  renderTargets(); renderIntel();
 }
-function renderObjectives() {
+function renderTargets() {
   if (!targets.length) {
-    const html = `<div class="objective-item"><div class="objective-body">NO OBJECTIVES ASSIGNED</div></div>`;
-    el.objectiveList.innerHTML = html; el.objectiveListMobile.innerHTML = html; return;
+    const html = `<div class="objective-item"><div class="objective-body">NO TARGETS ASSIGNED</div></div>`;
+    el.targetList.innerHTML = html; el.targetListMobile.innerHTML = html; return;
   }
-  const html = targets.map(t => `<div class="objective-item ${t.complete ? 'complete' : ''}"><div class="objective-top"><div class="objective-tag">TARGET ${String(t.id).padStart(2, '0')}</div><div class="objective-distance">${t.distanceMiles} MI</div></div><div class="objective-body">${t.complete ? 'OBJECTIVE COMPLETE' : 'REACH TARGET AND CLEAR THE ZONE'}</div></div>`).join('');
-  el.objectiveList.innerHTML = html; el.objectiveListMobile.innerHTML = html;
+  const html = targets.map(t => `<div class="objective-item ${t.complete ? 'complete' : ''}"><div class="objective-top"><div class="objective-tag">HOSTILE ${String(t.id).padStart(2, '0')}</div><div class="objective-distance">${t.distanceMiles} MI</div></div><div class="objective-body">${t.complete ? 'HOSTILE ELIMINATED' : 'ENTER RED ZONE TO ELIMINATE TARGET'}</div></div>`).join('');
+  el.targetList.innerHTML = html; el.targetListMobile.innerHTML = html;
+}
+function renderIntel() {
+  if (!pickups.length) {
+    const html = `<div class="pickup-item"><div class="pickup-body">NO INTEL ASSIGNED</div></div>`;
+    el.pickupList.innerHTML = html; el.pickupListMobile.innerHTML = html; return;
+  }
+  const html = pickups.map(p => `<div class="pickup-item ${p.complete ? 'complete' : ''}"><div class="pickup-top"><div class="pickup-tag">INTEL ${String(p.id).padStart(2, '0')}</div><div class="pickup-distance">${p.distanceMiles} MI</div></div><div class="pickup-body">${p.complete ? 'FILE SECURED' : 'COLLECT INTELLIGENCE PACKAGE'}</div></div>`).join('');
+  el.pickupList.innerHTML = html; el.pickupListMobile.innerHTML = html;
 }
 function humanizeStep(step) {
-  const name = step.name ? ` on ${step.name}` : ''; const mod = step.maneuver?.modifier ? ` ${step.maneuver.modifier.toUpperCase()}` : ''; const type = (step.maneuver?.type || 'continue').toUpperCase(); const dist = `${metersToMiles(step.distance).toFixed(2)} MI`;
+  const name = step.name ? ` on ${step.name}` : '';
+  const mod = step.maneuver?.modifier ? ` ${step.maneuver.modifier.toUpperCase()}` : '';
+  const type = (step.maneuver?.type || 'continue').toUpperCase();
+  const dist = `${metersToMiles(step.distance).toFixed(2)} MI`;
   if (type === 'DEPART') return { title: 'INSERTION', body: `Begin movement${name}.`, distance: dist };
   if (type === 'ARRIVE') return { title: 'EXFIL', body: `Return to origin${name}.`, distance: dist };
   if (type === 'TURN') return { title: `TURN${mod}`, body: `Proceed${name}.`, distance: dist };
@@ -353,76 +419,139 @@ function renderDirections(steps) {
     const html = `<div class="direction-item"><div class="direction-body">NO ROUTE LOADED</div></div>`;
     el.directionsList.innerHTML = html; el.directionsListMobile.innerHTML = html; return;
   }
-  const html = steps.map((step, i) => {
+  const html = steps.slice(0, 12).map((step, i) => {
     const line = humanizeStep(step);
     return `<div class="direction-item ${i === 0 ? 'active' : ''}" data-step-index="${i}"><div class="direction-top"><div class="direction-tag">${line.title}</div><div class="direction-distance">${line.distance}</div></div><div class="direction-body">${line.body}</div></div>`;
   }).join('');
   el.directionsList.innerHTML = html; el.directionsListMobile.innerHTML = html;
 }
-function setActiveDirection(index) { document.querySelectorAll('.direction-item').forEach(item => item.classList.remove('active')); document.querySelectorAll(`[data-step-index="${index}"]`).forEach(item => item.classList.add('active')); }
+function setActiveDirection(index) {
+  document.querySelectorAll('.direction-item').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll(`[data-step-index="${index}"]`).forEach(item => item.classList.add('active'));
+  const step = currentSteps[index];
+  if (step) {
+    const line = humanizeStep(step);
+    showToast(line.title, `${line.body} ${line.distance}`);
+  }
+}
 function closestStepIndex(lat, lng) {
-  if (!currentSteps.length) return 0; let best = 0; let bestDistance = Infinity;
-  currentSteps.forEach((step, index) => { const location = step.maneuver?.location; if (!location) return; const d = metersBetween(lat, lng, location[1], location[0]); if (d < bestDistance) { bestDistance = d; best = index; } });
+  if (!currentSteps.length) return 0;
+  let best = 0, bestDistance = Infinity;
+  currentSteps.forEach((step, index) => {
+    const location = step.maneuver?.location;
+    if (!location) return;
+    const d = metersBetween(lat, lng, location[1], location[0]);
+    if (d < bestDistance) { bestDistance = d; best = index; }
+  });
   return best;
 }
-function updateMissionFromPosition(lat, lng) {
-  updateHudCoords(lat, lng);
-  if (userMarker) { userMarker.setLatLng([lat, lng]); } else {
-    userMarker = L.circleMarker([lat, lng], { radius: 6, color: '#f8fafc', weight: 1, fillColor: '#f59e0b', fillOpacity: 0.95 }).addTo(map).bindPopup('ACTIVE AGENT');
-  }
-  targets.forEach(target => {
-    if (!target.complete) {
-      const d = metersBetween(lat, lng, target.lat, target.lng);
-      if (d < 35) {
-        target.complete = true; completedTargets += 1; kills += 1; target.marker.setStyle({ fillColor: '#f59e0b', color: '#fde68a' }); target.marker.bindPopup(`TARGET ${String(target.id).padStart(2, '0')} // ELIMINATED`); updateProgressUI();
+function checkDetections(lat, lng) {
+  pickups.forEach(pickup => {
+    if (!pickup.complete) {
+      const d = metersBetween(lat, lng, pickup.lat, pickup.lng);
+      if (d < 30) {
+        pickup.complete = true; collectedIntel += 1;
+        pickup.marker.setStyle({ fillColor: '#f59e0b', color: '#fde68a' });
+        pickup.marker.bindPopup(`INTEL ${String(pickup.id).padStart(2, '0')} // SECURED`);
+        updateProgressUI();
+        showToast('INTEL SECURED', `Intel package ${String(pickup.id).padStart(2, '0')} collected.`);
       }
     }
   });
-  const activeIndex = closestStepIndex(lat, lng); setActiveDirection(activeIndex);
-}
-async function loadIntel() {
-  if (!lastRoute) { setStatus('NO ROUTE AVAILABLE FOR INTEL SCAN'); return; }
-  if (intelLoaded) { setStatus('INTEL ALREADY LOADED'); return; }
-  setStatus('SCANNING FOR INTEL...');
-  const coords = lastRoute.geometry.coordinates;
-  const intelPoints = [coords[Math.floor(coords.length * 0.2)], coords[Math.floor(coords.length * 0.5)], coords[Math.floor(coords.length * 0.8)]].filter(Boolean);
-  intelPoints.forEach((p, i) => {
-    const marker = L.circleMarker([p[1], p[0]], { radius: 5, color: '#93c5fd', weight: 1, fillColor: '#3b82f6', fillOpacity: 0.85 }).addTo(map).bindPopup(`INTEL FILE ${String(i + 1).padStart(2, '0')}<br>POINT OF INTEREST DETECTED`);
-    intelMarkers.push(marker);
-  });
-  intelLoaded = true; setStatus('INTEL FILES MARKED ON MAP');
+
+  const nextIndex = closestStepIndex(lat, lng);
+  if (nextIndex !== activeStepIndex) {
+    activeStepIndex = nextIndex;
+    setActiveDirection(activeStepIndex);
+  }
+  checkDetections(lat, lng);
 }
 async function generateRoute(useReroll = false) {
   setSyncedInputs(); updateHudMeta(); setStatus('CALCULATING ROUTE...');
-  const manual = el.manualLocation.value.trim();
-  if (manual) {
-    const geocoded = await geocode(manual); if (!geocoded) { setStatus('LOCATION NOT FOUND'); return; }
-    startPoint = geocoded; updateHudCoords(startPoint.lat, startPoint.lng);
-  }
-  if (!startPoint) { setStatus('NO START POINT ACQUIRED'); return; }
+  if (!startPoint) { setStatus('ACQUIRE POSITION FIRST'); return; }
+
   clearMissionLayers(); addStartMarker();
-  const targetMeters = milesToMeters(parseFloat(el.distance.value || '2.5')); rerollSeed = useReroll ? rerollSeed + 1 : Math.random();
-  const a = randomPoint(startPoint.lat, startPoint.lng, targetMeters / 3, 0.13 + rerollSeed); const b = randomPoint(startPoint.lat, startPoint.lng, targetMeters / 3, 0.49 + rerollSeed);
+  const targetMiles = parseFloat(el.distance.value || '2.0');
+  const targetMeters = milesToMeters(targetMiles);
+  rerollSeed = useReroll ? rerollSeed + 1 : Math.random();
+
+  let a, b;
+  const mode = el.mode.value;
+  if (mode === 'night') {
+    a = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.28, 0.19 + rerollSeed);
+    b = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.30, 0.58 + rerollSeed);
+  } else if (mode === 'scenic') {
+    a = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.34, 0.12 + rerollSeed);
+    b = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.36, 0.47 + rerollSeed);
+  } else {
+    a = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.31, 0.15 + rerollSeed);
+    b = randomPoint(startPoint.lat, startPoint.lng, targetMeters * 0.33, 0.51 + rerollSeed);
+  }
+
   try {
-    const route = await fetchRoute([startPoint, a, b, startPoint]); lastRoute = route; currentSteps = route.legs?.flatMap(leg => leg.steps || []) || [];
-    routeLayer = L.geoJSON(route.geometry, { style: { color: '#6ea8ff', weight: 4, opacity: 0.96 } }).addTo(map); map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
-    generateTargets(route); generateEnemyZones(startPoint); renderDirections(currentSteps); updateProgressUI();
-    const actual = metersToMiles(route.distance).toFixed(2); el.hudActual.textContent = `ACTUAL ${actual} MI`; setStatus(`ROUTE LOCKED<br><span class='coords'>DIST: ${actual} MI // OBJECTIVES LIVE</span>`);
-  } catch (err) { setStatus('ROUTING FAILURE'); }
+    const route = await fetchRoute([startPoint, a, b, startPoint]);
+    lastRoute = route;
+    currentSteps = (route.legs?.flatMap(leg => leg.steps || []) || []).slice(0, 12);
+    routeLayer = L.geoJSON(route.geometry, { style: { color: '#6ea8ff', weight: 4, opacity: 0.96 } }).addTo(map);
+    map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+    generateEnemyTargets(route);
+    generateIntelPickups(route);
+    renderDirections(currentSteps);
+    updateProgressUI();
+    activeStepIndex = 0;
+    setActiveDirection(0);
+    const actual = metersToMiles(route.distance).toFixed(2);
+    el.hudActual.textContent = `ACTUAL ${actual} MI`;
+    el.routeDistanceText.textContent = `${actual} MI`;
+    el.routeDistanceTextMobile.textContent = `${actual} MI`;
+    setStatus(`ROUTE LOCKED<br><span class='coords'>DIST: ${actual} MI // HOSTILES LIVE // INTEL LIVE</span>`);
+    if (window.matchMedia('(max-width: 980px)').matches) {
+      el.mobileButtons.style.display = 'none';
+      el.mobileInstructionPanel.style.display = 'block';
+      el.mobileInstructionBody.textContent = currentSteps[0] ? humanizeStep(currentSteps[0]).body : 'Awaiting movement.';
+    }
+  } catch (err) {
+    setStatus('ROUTING FAILURE');
+  }
 }
 function acquirePosition() {
   setStatus('ACQUIRING GPS SIGNAL...');
   navigator.geolocation.getCurrentPosition(pos => {
-    startPoint = { lat: pos.coords.latitude, lng: pos.coords.longitude }; map.setView([startPoint.lat, startPoint.lng], 15); updateHudCoords(startPoint.lat, startPoint.lng); setStatus(`POSITION LOCKED<br><span class='coords'>${startPoint.lat.toFixed(4)}, ${startPoint.lng.toFixed(4)}</span>`);
+    startPoint = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    map.setView([startPoint.lat, startPoint.lng], 15);
+    updateHudCoords(startPoint.lat, startPoint.lng);
+    setStatus(`POSITION LOCKED<br><span class='coords'>${startPoint.lat.toFixed(4)}, ${startPoint.lng.toFixed(4)}</span>`);
+    if (userMarker) {
+      userMarker.setLatLng([startPoint.lat, startPoint.lng]);
+    } else {
+      userMarker = L.circleMarker([startPoint.lat, startPoint.lng], { radius: 6, color: '#f8fafc', weight: 1, fillColor: '#f59e0b', fillOpacity: 0.95 }).addTo(map).bindPopup('ACTIVE AGENT');
+    }
     if (watchId !== null) navigator.geolocation.clearWatch(watchId);
     watchId = navigator.geolocation.watchPosition(watch => { updateMissionFromPosition(watch.coords.latitude, watch.coords.longitude); }, () => {}, { enableHighAccuracy: true, maximumAge: 1000, timeout: 8000 });
   }, () => { setStatus('GPS ACQUISITION FAILED'); }, { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
 }
-function toggleDrawer() {
-  const collapsed = el.mobileDrawer.classList.toggle('mobile-collapsed'); el.toggleDrawerBtn.textContent = collapsed ? 'EXPAND' : 'COLLAPSE';
+function centerOnAgent() {
+  if (userMarker) map.setView(userMarker.getLatLng(), 16);
+  else if (startPoint) map.setView([startPoint.lat, startPoint.lng], 16);
 }
-el.distance.addEventListener('input', () => setSyncedInputs('desktop')); el.distanceMobile.addEventListener('input', () => setSyncedInputs('mobile')); el.manualLocation.addEventListener('input', () => setSyncedInputs('desktop')); el.manualLocationMobile.addEventListener('input', () => setSyncedInputs('mobile')); el.mode.addEventListener('change', () => setSyncedInputs('desktop')); el.modeMobile.addEventListener('change', () => setSyncedInputs('mobile'));
-document.getElementById('locateBtn').onclick = acquirePosition; document.getElementById('mobileLocateBtn').onclick = acquirePosition; document.getElementById('generateBtn').onclick = () => generateRoute(false); document.getElementById('mobileGenerateBtn').onclick = () => generateRoute(false); document.getElementById('rerollBtn').onclick = () => generateRoute(true); document.getElementById('mobileRerollBtn').onclick = () => generateRoute(true); document.getElementById('loadIntelBtn').onclick = loadIntel; document.getElementById('mobileIntelBtn').onclick = loadIntel; el.toggleDrawerBtn.onclick = toggleDrawer;
+function toggleDrawer() {
+  const collapsed = el.mobileDrawer.classList.toggle('mobile-collapsed');
+  el.toggleDrawerBtn.textContent = collapsed ? 'EXPAND' : 'COLLAPSE';
+}
+
+el.distance.addEventListener('input', () => setSyncedInputs('desktop'));
+el.distanceMobile.addEventListener('input', () => setSyncedInputs('mobile'));
+el.mode.addEventListener('change', () => setSyncedInputs('desktop'));
+el.modeMobile.addEventListener('change', () => setSyncedInputs('mobile'));
+document.getElementById('locateBtn').onclick = acquirePosition;
+document.getElementById('mobileLocateBtn').onclick = acquirePosition;
+document.getElementById('generateBtn').onclick = () => generateRoute(false);
+document.getElementById('mobileGenerateBtn').onclick = () => generateRoute(false);
+document.getElementById('rerollBtn').onclick = () => generateRoute(true);
+document.getElementById('mobileRerollBtn').onclick = () => generateRoute(true);
+document.getElementById('centerBtn').onclick = centerOnAgent;
+document.getElementById('mobileCenterBtn').onclick = centerOnAgent;
+el.toggleDrawerBtn.onclick = toggleDrawer;
 setSyncedInputs(); updateProgressUI(); renderDirections([]);
 </script>
 </body>
