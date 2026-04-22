@@ -19,6 +19,7 @@
       --red: #ef4444;
       --red-2: #dc2626;
       --amber: #f59e0b;
+      --green: #22c55e;
     }
 
     * { box-sizing: border-box; }
@@ -101,7 +102,6 @@
       letter-spacing: 1px;
       transition: transform .14s ease, opacity .14s ease, box-shadow .14s ease;
     }
-
     button.secondary { background: var(--panel-2); }
     button:hover {
       transform: translateY(-1px);
@@ -124,16 +124,8 @@
       margin-bottom: 10px;
     }
 
-    .status-text {
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .coords {
-      font-size: 10px;
-      color: #6f84aa;
-      margin-top: 4px;
-    }
+    .status-text { font-size: 12px; line-height: 1.45; }
+    .coords { font-size: 10px; color: #6f84aa; margin-top: 4px; }
 
     .meter-grid {
       display: grid;
@@ -236,7 +228,7 @@
     #map {
       height: 100%;
       width: 100%;
-      filter: grayscale(0.85) contrast(1.12) brightness(0.82) saturate(0.78);
+      filter: grayscale(0.85) contrast(1.18) brightness(0.78) saturate(0.78);
     }
 
     .tactical-grid, .vignette, .scan-line, .crosshair {
@@ -336,30 +328,34 @@
 
     .heartbeat {
       margin-top: 8px;
-      height: 16px;
       width: 140px;
-      position: relative;
+      height: 24px;
       overflow: hidden;
-      opacity: 0.9;
+      position: relative;
+      opacity: 0.95;
     }
 
-    .heartbeat::before {
-      content: '';
+    .heartbeat svg {
+      width: 220px;
+      height: 24px;
       position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        transparent 18px,
-        #6ea8ff 20px,
-        transparent 22px
-      );
-      animation: pulseLine 1.15s linear infinite;
+      left: 0;
+      top: 0;
+      animation: heartbeatMove 2.2s linear infinite;
     }
 
-    @keyframes pulseLine {
+    .heartbeat polyline {
+      fill: none;
+      stroke: #6ea8ff;
+      stroke-width: 2;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px rgba(110,168,255,0.45));
+    }
+
+    @keyframes heartbeatMove {
       from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      to { transform: translateX(-80px); }
     }
 
     .map-label-chip {
@@ -408,21 +404,7 @@
     }
 
     .mobile-drawer { display: none; }
-
-    .floating-button {
-      display: none;
-    }
-
-    .hostile-zone {
-      animation: hostilePulse 2s ease-in-out infinite;
-      transform-origin: center;
-    }
-
-    @keyframes hostilePulse {
-      0% { opacity: 0.70; }
-      50% { opacity: 1; }
-      100% { opacity: 0.70; }
-    }
+    .floating-button { display: none; }
 
     .leaflet-control-zoom a {
       background: rgba(5,7,10,0.92) !important;
@@ -444,6 +426,42 @@
 
       .sidebar { display: none; }
       .map-shell { height: 100vh; }
+
+      .hud {
+        font-size: 10px;
+      }
+
+      .hud-top-left {
+        top: 12px;
+        left: 12px;
+        right: auto;
+      }
+
+      .hud-top-right {
+        top: 12px;
+        right: 12px;
+        left: auto;
+      }
+
+      .hud-bottom-right {
+        display: none;
+      }
+
+      .hud-panel {
+        min-width: 132px;
+        max-width: 42vw;
+        padding: 8px 10px;
+      }
+
+      .heartbeat {
+        width: 100px;
+        height: 18px;
+      }
+
+      .heartbeat svg {
+        width: 170px;
+        height: 18px;
+      }
 
       .mobile-drawer {
         display: block;
@@ -498,6 +516,13 @@
         transform: none;
         min-width: auto;
         max-width: none;
+      }
+
+      .map-label-chip {
+        left: 12px;
+        bottom: calc(142px + env(safe-area-inset-bottom));
+        font-size: 9px;
+        padding: 7px 10px;
       }
     }
   </style>
@@ -578,7 +603,11 @@
           <div>ACKELBEIN</div>
           <div class="coords">ID: 07-442-DAL</div>
           <div class="coords">STATE: ACTIVE</div>
-          <div class="heartbeat"></div>
+          <div class="heartbeat">
+            <svg viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="0,14 20,14 32,14 38,8 44,20 52,6 60,14 84,14 106,14 112,8 118,20 126,6 134,14 160,14 182,14 188,8 194,20 202,6 210,14 220,14"></polyline>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -665,12 +694,12 @@
   <script>
     const map = L.map('map', { zoomControl: true }).setView([32.7767, -96.7970], 13);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    const darkBase = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 20,
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
     }).addTo(map);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const labelBoost = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 20,
       opacity: 0.16,
       attribution: '&copy; OpenStreetMap contributors'
@@ -692,6 +721,7 @@
     let rerollSeed = 0;
     let activeStepIndex = 0;
     let lastToastKey = '';
+    let followMode = true;
 
     const el = {
       distance: document.getElementById('distance'),
@@ -702,7 +732,6 @@
       statusMobile: document.getElementById('statusMobile'),
       coordsText: document.getElementById('coordsText'),
       coordsTextMobile: document.getElementById('coordsTextMobile'),
-      hudStatus: document.getElementById('hudStatus'),
       hudCoords: document.getElementById('hudCoords'),
       hudTime: document.getElementById('hudTime'),
       hudProfile: document.getElementById('hudProfile'),
@@ -811,14 +840,16 @@
       return data.routes[0];
     }
 
-    function showToast(label, body) {
+    function showToast(label, body, persistMobile = true) {
       const key = `${label}__${body}`;
       if (key === lastToastKey) return;
       lastToastKey = key;
       el.toastLabel.textContent = label;
       el.toastBody.textContent = body;
       el.missionToast.style.display = 'block';
-      el.mobileInstructionBody.textContent = `${label}: ${body}`;
+      if (persistMobile) {
+        el.mobileInstructionBody.textContent = `${label}: ${body}`;
+      }
       clearTimeout(showToast._timer);
       showToast._timer = setTimeout(() => {
         el.missionToast.style.display = 'none';
@@ -880,6 +911,23 @@
       collectedIntel = 0;
       activeStepIndex = 0;
       updateProgressUI();
+      if (window.matchMedia('(max-width: 980px)').matches) {
+        el.mobileButtons.style.display = 'grid';
+        el.mobileInstructionPanel.style.display = 'none';
+      }
+    }
+
+    function applyHostileStyle(zone, eliminated = false) {
+      if (!zone?._path) return;
+      zone._path.style.stroke = eliminated ? '#fde68a' : '#dc2626';
+      zone._path.style.fill = eliminated ? '#f59e0b' : '#ef4444';
+      zone._path.style.fillOpacity = eliminated ? '0.30' : '0.40';
+      zone._path.style.opacity = '1';
+      if (eliminated) {
+        zone._path.style.animation = 'none';
+      } else {
+        zone._path.style.animation = 'hostilePulse 2s ease-in-out infinite';
+      }
     }
 
     function generateEnemyTargets(route) {
@@ -900,9 +948,11 @@
           color: '#dc2626',
           weight: 2,
           fillColor: '#ef4444',
-          fillOpacity: 0.35,
-          className: 'hostile-zone'
+          fillOpacity: 0.40
         }).addTo(map).bindPopup(`HOSTILE ${String(i).padStart(2, '0')}`);
+
+        zone.on('add', () => applyHostileStyle(zone, false));
+        applyHostileStyle(zone, false);
 
         enemyZones.push(zone);
         targets.push({
@@ -1051,48 +1101,38 @@
       el.directionsListMobile.innerHTML = html;
     }
 
+    function updateFieldInstruction(line) {
+      const text = `${line.title}: ${line.body} ${line.distance}`;
+      el.mobileInstructionBody.textContent = text;
+      showToast(line.title, `${line.body} ${line.distance}`, false);
+    }
+
     function setActiveDirection(index) {
       document.querySelectorAll('.direction-item').forEach(item => item.classList.remove('active'));
       document.querySelectorAll(`[data-step-index="${index}"]`).forEach(item => item.classList.add('active'));
       const step = currentSteps[index];
       if (step) {
         const line = humanizeStep(step);
-        showToast(line.title, `${line.body} ${line.distance}`);
+        updateFieldInstruction(line);
       }
     }
 
-    function closestStepIndex(lat, lng) {
-      if (!currentSteps.length) return 0;
-      let best = activeStepIndex;
-      let bestDistance = Infinity;
-
-      currentSteps.forEach((step, index) => {
-        const location = step.maneuver?.location;
-        if (!location) return;
-        const d = metersBetween(lat, lng, location[1], location[0]);
-        if (d < bestDistance) {
-          bestDistance = d;
-          best = index;
-        }
-      });
-
-      return best;
+    function stepDistanceToPoint(step, lat, lng) {
+      const location = step?.maneuver?.location;
+      if (!location) return Infinity;
+      return metersBetween(lat, lng, location[1], location[0]);
     }
 
     function nextInstructionTriggered(lat, lng) {
       if (!currentSteps.length) return activeStepIndex;
       const current = currentSteps[activeStepIndex];
-      const next = currentSteps[Math.min(activeStepIndex + 1, currentSteps.length - 1)];
-      const currentLoc = current?.maneuver?.location;
-      const nextLoc = next?.maneuver?.location;
+      const nextIndex = Math.min(activeStepIndex + 1, currentSteps.length - 1);
+      const next = currentSteps[nextIndex];
+      const distToCurrent = stepDistanceToPoint(current, lat, lng);
+      const distToNext = stepDistanceToPoint(next, lat, lng);
 
-      if (!currentLoc || !nextLoc) return closestStepIndex(lat, lng);
-
-      const distToCurrent = metersBetween(lat, lng, currentLoc[1], currentLoc[0]);
-      const distToNext = metersBetween(lat, lng, nextLoc[1], nextLoc[0]);
-
-      if (distToNext < 35 || distToNext < distToCurrent) {
-        return Math.min(activeStepIndex + 1, currentSteps.length - 1);
+      if (distToNext < 28 || (distToCurrent < 18 && distToNext < 60)) {
+        return nextIndex;
       }
       return activeStepIndex;
     }
@@ -1104,7 +1144,7 @@
           if (d < target.radius) {
             target.complete = true;
             kills += 1;
-            target.marker.setStyle({ fillColor: '#f59e0b', color: '#fde68a', fillOpacity: 0.30 });
+            applyHostileStyle(target.marker, true);
             target.marker.bindPopup(`HOSTILE ${String(target.id).padStart(2, '0')} // ELIMINATED`);
             updateProgressUI();
             showToast('TARGET ELIMINATED', `Hostile ${String(target.id).padStart(2, '0')} neutralized.`);
@@ -1120,7 +1160,7 @@
       pickups.forEach(pickup => {
         if (!pickup.complete) {
           const d = metersBetween(lat, lng, pickup.lat, pickup.lng);
-          if (d < 30) {
+          if (d < 24) {
             pickup.complete = true;
             collectedIntel += 1;
             pickup.marker.setStyle({ fillColor: '#f59e0b', color: '#fde68a' });
@@ -1138,6 +1178,11 @@
       }
 
       checkDetections(lat, lng);
+
+      if (followMode && userMarker) {
+        const pos = userMarker.getLatLng();
+        map.panTo([pos.lat + 0.00018, pos.lng], { animate: true, duration: 1.0 });
+      }
     }
 
     async function generateRoute(useReroll = false) {
@@ -1175,7 +1220,7 @@
         currentSteps = (route.legs?.flatMap(leg => leg.steps || []) || []).slice(0, 12);
 
         routeLayer = L.geoJSON(route.geometry, {
-          style: { color: '#2563eb', weight: 5, opacity: 0.88 }
+          style: { color: '#2563eb', weight: 5, opacity: 0.92 }
         }).addTo(map);
         map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
 
@@ -1185,7 +1230,9 @@
         updateProgressUI();
 
         activeStepIndex = 0;
-        setActiveDirection(0);
+        if (currentSteps[0]) {
+          setActiveDirection(0);
+        }
 
         const actual = metersToMiles(route.distance).toFixed(2);
         el.hudActual.textContent = `ACTUAL ${actual} MI`;
@@ -1196,8 +1243,6 @@
         if (window.matchMedia('(max-width: 980px)').matches) {
           el.mobileButtons.style.display = 'none';
           el.mobileInstructionPanel.style.display = 'block';
-          const line = currentSteps[0] ? humanizeStep(currentSteps[0]) : null;
-          el.mobileInstructionBody.textContent = line ? `${line.title}: ${line.body} ${line.distance}` : 'Awaiting movement.';
         }
       } catch (err) {
         setStatus('ROUTING FAILURE');
@@ -1216,13 +1261,16 @@
         if (watchId !== null) navigator.geolocation.clearWatch(watchId);
         watchId = navigator.geolocation.watchPosition(watch => {
           updateMissionFromPosition(watch.coords.latitude, watch.coords.longitude, watch.coords.accuracy || 0);
-        }, () => {}, { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
+        }, () => {
+          setStatus('TRACKING DEGRADED');
+        }, { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
       }, () => {
         setStatus('GPS ACQUISITION FAILED');
       }, { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
     }
 
     function centerOnAgent() {
+      followMode = true;
       if (userMarker) map.setView(userMarker.getLatLng(), 17);
       else if (startPoint) map.setView([startPoint.lat, startPoint.lng], 16);
     }
@@ -1232,12 +1280,9 @@
       el.toggleDrawerBtn.textContent = collapsed ? 'EXPAND' : 'COLLAPSE';
     }
 
-    function cinematicFollow() {
-      if (!userMarker) return;
-      const pos = userMarker.getLatLng();
-      map.panTo([pos.lat + 0.00022, pos.lng], { animate: true, duration: 1.4 });
-    }
-    setInterval(cinematicFollow, 3000);
+    map.on('dragstart zoomstart', () => {
+      followMode = false;
+    });
 
     (function addSpyDecor() {
       const deco = [
@@ -1245,6 +1290,7 @@
         { lat: 32.7748, lng: -96.7951, emoji: '🔫', label: 'ARMORY' },
         { lat: 32.7801, lng: -96.7926, emoji: '🕶️', label: 'SURVEILLANCE POST' }
       ];
+
       deco.forEach(d => {
         L.marker([d.lat, d.lng], {
           icon: L.divIcon({
