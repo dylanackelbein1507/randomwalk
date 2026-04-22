@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Walk Route Generator</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #f5f5f5;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      height: 100vh;
+    }
+
+    .sidebar {
+      padding: 20px;
+      background: #181818;
+      border-right: 1px solid #2a2a2a;
+      overflow-y: auto;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .muted {
+      color: #b8b8b8;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .field {
+      margin: 16px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #222;
+      color: #fff;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: #2f6fed;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    button.secondary {
+      background: #333;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .card {
+      background: #202020;
+      border: 1px solid #2c2c2c;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+
+    .route-meta {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .landmark {
+      padding: 10px 0;
+      border-top: 1px solid #2c2c2c;
+    }
+
+    .landmark:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .landmark h3 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+    }
+
+    .landmark p {
+      margin: 0;
+      color: #d2d2d2;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #2a2a2a;
+      }
+
+      #map {
+        height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar">
+      <h1>Random Walk Route</h1>
+      <p class="muted">
+        Enter how far you want to walk. The app tries to make a loop, then shows nearby landmarks with short Wikipedia intros so you can learn as you go.
+      </p>
+
+      <div class="field">
+        <label for="distance">Distance (miles)</label>
+        <input id="distance" type="number" min="0.5" max="15" step="0.1" value="2.5" />
+      </div>
+
+      <div class="field">
+        <label for="mode">Style</label>
+        <select id="mode">
+          <option value="balanced">Balanced</option>
+          <option value="park">Park heavy</option>
+          <option value="landmarks">Landmarks</option>
+        </select>
+      </div>
+
+      <button id="locateBtn">Use My Location</button>
+      <button id="generateBtn" class="secondary" disabled>Generate Route</button>
+      <button id="rerollBtn" class="secondary" disabled>Reroll Route</button>
+
+      <div class="card">
+        <div id="status" class="route-meta">Step 1: Click <b>Use My Location</b>.</div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0; font-size:18px;">Landmarks on your route</h2>
+        <div id="landmarks" class="small">No route yet.</div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([32.7767, -96.7970], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let startPoint = null;
+    let startMarker = null;
+    let routeLayer = null;
+    let landmarkMarkers = [];
+    let lastCandidates = [];
+
+    const statusEl = document.getElementById('status');
+    const landmarksEl = document.getElementById('landmarks');
+    const locateBtn = document.getElementById('locateBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const rerollBtn = document.getElementById('rerollBtn');
+
+    function setStatus(html) {
+      statusEl.innerHTML = html;
+    }
+
+    function milesToMeters(miles) {
+      return miles * 1609.34;
+    }
+
+    function metersToMiles(meters) {
+      return meters / 1609.34;
+    }
+
+    function clearRoute() {
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+        routeLayer = null;
+      }
+      landmarkMarkers.forEach(marker => map.removeLayer(marker));
+      landmarkMarkers = [];
+      landmarksEl.innerHTML = 'No route yet.';
+    }
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function destinationPoint(lat, lng, distanceMeters, bearingDeg) {
+      const R = 6371000;
+      const brng = bearingDeg * Math.PI / 180;
+      const lat1 = lat * Math.PI / 180;
+      const lon1 = lng * Math.PI / 180;
+
+      const lat2 = Math.asin(
+        Math.sin(lat1) * Math.cos(distanceMeters / R) +
+        Math.cos(lat1) * Math.sin(distanceMeters / R) * Math.cos(brng)
+      );
+
+      const lon2 = lon1 + Math.atan2(
+        Math.sin(brng) * Math.sin(distanceMeters / R) * Math.cos(lat1),
+        Math.cos(distanceMeters / R) - Math.sin(lat1) * Math.sin(lat2)
+      );
+
+      return [lat2 * 180 / Math.PI, lon2 * 180 / Math.PI];
+    }
+
+    async function overpassQuery(lat, lng, radiusMeters, mode) {
+      let extra = '';
+
+      if (mode === 'park') {
+        extra = `
+          way["leisure"="park"](around:${radiusMeters},${lat},${lng});
+          relation["leisure"="park"](around:${radiusMeters},${lat},${lng});
+          way["highway"~"footway|path|pedestrian"](around:${radiusMeters},${lat},${lng});
+        `;
+      } else if (mode === 'landmarks') {
+        extra = `
+          node["tourism"~"attraction|artwork|museum|viewpoint|gallery"](around:${radiusMeters},${lat},${lng});
+          way["tourism"~"attraction|museum|gallery"](around:${radiusMeters},${lat},${lng});
+          node["historic"](around:${radiusMeters},${lat},${lng});
+          way["historic"](around:${radiusMeters},${lat},${lng});
+        `;
+      } else {
+        extra = `
+          node["tourism"~"attraction|artwork|viewpoint"](around:${radiusMeters},${lat},${lng});
+          node["historic"](around:${radiusMeters},${lat},${lng});
+          way["leisure"="park"](around:${radiusMeters},${lat},${lng});
+          way["highway"~"footway|path|pedestrian"](around:${radiusMeters},${lat},${lng});
+        `;
+      }
+
+      const query = `
+        [out:json][timeout:25];
+        (
+          ${extra}
+        );
+        out center tags;
+      `;
+
+      const response = await fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        body: query
+      });
+
+      if (!response.ok) throw new Error('Overpass request failed');
+      return response.json();
+    }
+
+    async function routeThroughPoints(points) {
+      const coords = points.map(p => `${p[1]},${p[0]}`).join(';');
+      const url = `https://router.project-osrm.org/route/v1/foot/${coords}?overview=full&geometries=geojson&steps=false`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Routing failed');
+      const data = await response.json();
+      if (!data.routes || !data.routes.length) throw new Error('No route found');
+      return data.routes[0];
+    }
+
+    function pickInterestingAnchors(lat, lng, targetMeters, features) {
+      const candidates = [];
+      const idealLeg = targetMeters / 3;
+      const baseRadius = Math.max(idealLeg * 0.75, 400);
+
+      for (let i = 0; i < 10; i++) {
+        const startBearing = randomBetween(0, 360);
+        const pointA = destinationPoint(lat, lng, baseRadius, startBearing);
+        const pointB = destinationPoint(lat, lng, baseRadius * randomBetween(0.85, 1.2), startBearing + randomBetween(80, 150));
+
+        candidates.push([pointA, pointB]);
+      }
+
+      const namedFeatures = (features.elements || [])
+        .filter(el => el.tags && el.tags.name)
+        .map(el => {
+          const fLat = el.lat || (el.center && el.center.lat);
+          const fLng = el.lon || (el.center && el.center.lon);
+          return {
+            name: el.tags.name,
+            lat: fLat,
+            lng: fLng,
+            tags: el.tags
+          };
+        })
+        .filter(f => f.lat && f.lng);
+
+      if (namedFeatures.length >= 2) {
+        for (let i = 0; i < 8; i++) {
+          const shuffled = [...namedFeatures].sort(() => Math.random() - 0.5);
+          const a = shuffled[0];
+          const b = shuffled[1];
+          candidates.push([[a.lat, a.lng], [b.lat, b.lng]]);
+        }
+      }
+
+      return candidates;
+    }
+
+    function scoreFeature(tags) {
+      let score = 0;
+      if (!tags) return score;
+      if (tags.leisure === 'park') score += 5;
+      if (tags.tourism) score += 4;
+      if (tags.historic) score += 4;
+      if (tags.highway && ['footway', 'path', 'pedestrian'].includes(tags.highway)) score += 3;
+      if (tags.natural || tags.waterway) score += 2;
+      return score;
+    }
+
+    function routeDistanceToFeature(routeCoords, feature) {
+      let best = Infinity;
+      for (const coord of routeCoords) {
+        const dLat = coord[1] - feature.lat;
+        const dLng = coord[0] - feature.lng;
+        const rough = Math.sqrt(dLat * dLat + dLng * dLng);
+        if (rough < best) best = rough;
+      }
+      return best;
+    }
+
+    function scoreRoute(route, features, targetMeters) {
+      const distScore = 30 - Math.abs(route.distance - targetMeters) / 100;
+      const nearFeatures = (features.elements || []).filter(el => {
+        const lat = el.lat || (el.center && el.center.lat);
+        const lng = el.lon || (el.center && el.center.lon);
+        if (!lat || !lng) return false;
+        const roughDist = routeDistanceToFeature(route.geometry.coordinates, { lat, lng });
+        return roughDist < 0.0025;
+      });
+
+      let featureScore = 0;
+      for (const f of nearFeatures) {
+        featureScore += scoreFeature(f.tags);
+      }
+
+      return distScore + featureScore;
+    }
+
+    async function getWikipediaSummary(title) {
+      const encoded = encodeURIComponent(title.replace(/ /g, '_'));
+      const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data.extract || null;
+      } catch {
+        return null;
+      }
+    }
+
+    async function showLandmarks(features, route) {
+      const routeCoords = route.geometry.coordinates;
+      const nearby = (features.elements || [])
+        .filter(el => el.tags && el.tags.name)
+        .map(el => ({
+          name: el.tags.name,
+          lat: el.lat || (el.center && el.center.lat),
+          lng: el.lon || (el.center && el.center.lon),
+          tags: el.tags
+        }))
+        .filter(f => f.lat && f.lng)
+        .map(f => ({
+          ...f,
+          routeCloseness: routeDistanceToFeature(routeCoords, f),
+          coolness: scoreFeature(f.tags)
+        }))
+        .filter(f => f.routeCloseness < 0.0025)
+        .sort((a, b) => (b.coolness - a.coolness) || (a.routeCloseness - b.routeCloseness))
+        .slice(0, 5);
+
+      if (!nearby.length) {
+        landmarksEl.innerHTML = 'No named landmarks found on this route. Hit reroll.';
+        return;
+      }
+
+      landmarksEl.innerHTML = 'Loading landmark intros...';
+      const parts = [];
+
+      for (const landmark of nearby) {
+        const summary = await getWikipediaSummary(landmark.name);
+        const marker = L.marker([landmark.lat, landmark.lng]).addTo(map)
+          .bindPopup(`<b>${landmark.name}</b><br>${summary ? summary.slice(0, 180) + '...' : 'No Wikipedia intro found.'}`);
+        landmarkMarkers.push(marker);
+
+        parts.push(`
+          <div class="landmark">
+            <h3>${landmark.name}</h3>
+            <p>${summary || 'No Wikipedia intro found for this stop, but it is still a named point on your route.'}</p>
+          </div>
+        `);
+      }
+
+      landmarksEl.innerHTML = parts.join('');
+    }
+
+    async function generateRoute() {
+      if (!startPoint) return;
+
+      clearRoute();
+      generateBtn.disabled = true;
+      rerollBtn.disabled = true;
+
+      const miles = parseFloat(document.getElementById('distance').value);
+      const mode = document.getElementById('mode').value;
+      const targetMeters = milesToMeters(miles);
+      const radiusMeters = Math.max(targetMeters * 0.8, 800);
+
+      setStatus('Finding cool stuff near you...');
+
+      try {
+        const features = await overpassQuery(startPoint.lat, startPoint.lng, Math.round(radiusMeters), mode);
+        const anchors = pickInterestingAnchors(startPoint.lat, startPoint.lng, targetMeters, features);
+
+        const routePromises = anchors.map(async pair => {
+          try {
+            const route = await routeThroughPoints([
+              [startPoint.lat, startPoint.lng],
+              pair[0],
+              pair[1],
+              [startPoint.lat, startPoint.lng]
+            ]);
+            const score = scoreRoute(route, features, targetMeters);
+            return { route, score };
+          } catch {
+            return null;
+          }
+        });
+
+        const results = (await Promise.all(routePromises)).filter(Boolean);
+        if (!results.length) throw new Error('Could not generate a route here. Try a different distance or reroll.');
+
+        results.sort((a, b) => b.score - a.score);
+        lastCandidates = results;
+        drawCandidate(0, features, miles);
+        rerollBtn.disabled = false;
+      } catch (error) {
+        setStatus(`Something failed: ${error.message}`);
+      } finally {
+        generateBtn.disabled = false;
+      }
+    }
+
+    async function drawCandidate(index, features, requestedMiles) {
+      clearRoute();
+      const chosen = lastCandidates[index];
+      if (!chosen) return;
+
+      routeLayer = L.geoJSON(chosen.route.geometry, {
+        style: {
+          color: '#2f6fed',
+          weight: 5
+        }
+      }).addTo(map);
+
+      map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+
+      const actualMiles = metersToMiles(chosen.route.distance).toFixed(2);
+      const mins = Math.round(chosen.route.duration / 60);
+
+      setStatus(`
+        <b>Requested:</b> ${requestedMiles} miles<br>
+        <b>Actual:</b> ${actualMiles} miles<br>
+        <b>Est. time:</b> ${mins} minutes<br>
+        <b>Tip:</b> Hit <b>Reroll Route</b> if the vibe looks off.
+      `);
+
+      await showLandmarks(features, chosen.route);
+    }
+
+    let rerollIndex = 1;
+    rerollBtn.addEventListener('click', async () => {
+      if (!lastCandidates.length) return;
+      if (rerollIndex >= lastCandidates.length) rerollIndex = 0;
+
+      const miles = parseFloat(document.getElementById('distance').value);
+      const mode = document.getElementById('mode').value;
+      const targetMeters = milesToMeters(miles);
+      const radiusMeters = Math.max(targetMeters * 0.8, 800);
+
+      const features = await overpassQuery(startPoint.lat, startPoint.lng, Math.round(radiusMeters), mode);
+      await drawCandidate(rerollIndex, features, miles);
+      rerollIndex += 1;
+    });
+
+    locateBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        setStatus('Your browser does not support location.');
+        return;
+      }
+
+      setStatus('Getting your location...');
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          startPoint = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          if (startMarker) map.removeLayer(startMarker);
+          startMarker = L.marker([startPoint.lat, startPoint.lng]).addTo(map).bindPopup('You start here').openPopup();
+          map.setView([startPoint.lat, startPoint.lng], 15);
+          generateBtn.disabled = false;
+          setStatus('Location found. Step 2: click <b>Generate Route</b>.');
+        },
+        error => {
+          setStatus('Could not get your location: ' + error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    });
+
+    generateBtn.addEventListener('click', generateRoute);
+  </script>
+</body>
+</html>
